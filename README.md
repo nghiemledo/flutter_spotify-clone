@@ -53,8 +53,8 @@ A feature-rich Spotify-like music streaming app built with **Flutter** (frontend
 ### **Backend Setup**
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/yourusername/spotify-clone-backend.git
-   cd spotify-clone-backend
+   git clone https://github.com/nghiemledo/flutter_spotify-clone.git
+   cd server
    ```
 2. Install dependencies:  
    ```bash
@@ -76,7 +76,7 @@ A feature-rich Spotify-like music streaming app built with **Flutter** (frontend
 ### **Frontend Setup**
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/nghimeledo/flutter_spotify-clone.git
+   git clone https://github.com/nghiemledo/flutter_spotify-clone.git
    cd flutter_spotify-clone
    ```
 2. Install dependencies:  
