@@ -1,5 +1,5 @@
 
-# **Flutter Spotify Clone 🎵**
+# **Spotify Clone (Flutter FE) 🎵**
 
 A feature-rich Spotify-like music streaming app built with **Flutter** (frontend) and **Express.js** (backend). This app allows users to stream songs, create playlists, explore genres, and enjoy music seamlessly.
 
