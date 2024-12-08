@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class LibraryScreen extends StatelessWidget {
+  const LibraryScreen({super.key});
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Colors.black,
       body: Center(
         child: Text(
-          "Trang Chủ",
+          "Thư Viện",
           style: TextStyle(color: Colors.white, fontSize: 24),
         ),
       ),
