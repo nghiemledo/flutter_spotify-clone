@@ -1,4 +1,4 @@
-import GenreRepository from "../infrastructure/repository/genre.repository";
+import GenreRepository from "../infrastructure/repositories/genre.repository";
 
 class GenreService {
     constructor(private genreRepository: GenreRepository) {}

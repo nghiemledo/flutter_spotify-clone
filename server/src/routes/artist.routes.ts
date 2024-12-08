@@ -1,7 +1,7 @@
 import { Router } from "express";
 import ArtistController from "../presentation/artist.controller";
 import ArtistService from "../application/artist.service";
-import ArtistRepository from "../infrastructure/repository/artist.repository";
+import ArtistRepository from "../infrastructure/repositories/artist.repository";
 
 const artistRouter = Router();
 const artistRepository = new ArtistRepository();

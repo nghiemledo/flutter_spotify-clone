@@ -1,5 +1,5 @@
 import { Router } from "express";
-import SongRepository from "../infrastructure/repository/song.repository";
+import SongRepository from "../infrastructure/repositories/song.repository";
 import SongService from "../application/song.service";
 import SongController from "../presentation/song.controller";
 

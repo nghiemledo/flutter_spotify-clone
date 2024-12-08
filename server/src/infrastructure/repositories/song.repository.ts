@@ -1,6 +1,4 @@
-interface ISongRepository {
-
-}
+import { ISongRepository } from "../../domain/interfaces/ISong.repository";
 
 class SongRepository implements ISongRepository {
 
