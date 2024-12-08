@@ -8,5 +8,6 @@ const genreRepository = new GenreRepository();
 const genreService = new GenreService(genreRepository);
 const genreController = new GenreController(genreService);
 
-genreRouter.get('/', genreController.getAllGenres)
+genreRouter.get('/', genreController.getAllGenres);
+
 export default genreRouter;
