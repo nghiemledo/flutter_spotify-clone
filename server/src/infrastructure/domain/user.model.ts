@@ -31,7 +31,8 @@ const UserSchema: Schema = new Schema (
         discoverList: [{type: Schema.Types.ObjectId, ref: "Song"}],
         followedArtist: [{type: Schema.Types.ObjectId, ref: "Artist"}],
         playlists: [{type: Schema.Types.ObjectId, ref: "Playlist"}]
-    }
+    }, 
+    {timestamps: true}
 );
 
 export default mongoose.model<IUser>("User", UserSchema);

@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/mongoose": "^5.11.96",
     "express": "^4.21.2",
     "mongoose": "^8.8.4"
   },
