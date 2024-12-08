@@ -6,18 +6,18 @@ import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const SpotifyCloneApp());
+  runApp(const SpotifyApp());
 }
 
-class SpotifyCloneApp extends StatefulWidget {
-  const SpotifyCloneApp({super.key});
+class SpotifyApp extends StatefulWidget {
+  const SpotifyApp({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
   _SpotifyCloneAppState createState() => _SpotifyCloneAppState();
 }
 
-class _SpotifyCloneAppState extends State<SpotifyCloneApp> {
+class _SpotifyCloneAppState extends State<SpotifyApp> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
