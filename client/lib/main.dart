@@ -22,14 +22,22 @@ class SpotifyApp extends StatelessWidget {
 }
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final int initialPage;
+
+  const MainScreen({super.key, this.initialPage = 0});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 0;
+  late int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialPage;
+  }
 
   final List<Widget> _pages = [
     const HomeScreen(),
