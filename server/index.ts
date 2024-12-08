@@ -1,5 +1,7 @@
 import express from "express";
 import dotenv from 'dotenv';
+import bodyParser from "body-parser";
+import morgan from "morgan";
 import mongoose from "mongoose";
 import authRouter from "./src/routes/auth.routes";
 import artistRouter from "./src/routes/artist.routes";
@@ -9,6 +11,9 @@ import playlistRouter from "./src/routes/playlist.routes";
 
 const app = express();
 dotenv.config();
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
+app.use(morgan("combined"));
 
 const PORT = process.env.PORT;
 
