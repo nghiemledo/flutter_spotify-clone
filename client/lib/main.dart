@@ -9,15 +9,26 @@ void main() {
   runApp(const SpotifyApp());
 }
 
-class SpotifyApp extends StatefulWidget {
+class SpotifyApp extends StatelessWidget {
   const SpotifyApp({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _SpotifyCloneAppState createState() => _SpotifyCloneAppState();
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MainScreen(),
+    );
+  }
 }
 
-class _SpotifyCloneAppState extends State<SpotifyApp> {
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
@@ -28,31 +39,28 @@ class _SpotifyCloneAppState extends State<SpotifyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Stack(
-          children: [
-            _pages[_currentIndex],
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SongWidget(),
-                  NavigationWidget(
-                    currentIndex: _currentIndex,
-                    onTabSelected: (index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
-                  ),
-                ],
-              ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          _pages[_currentIndex],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SongWidget(),
+                NavigationWidget(
+                  currentIndex: _currentIndex,
+                  onTabSelected: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
