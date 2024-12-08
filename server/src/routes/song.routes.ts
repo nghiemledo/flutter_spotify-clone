@@ -8,5 +8,6 @@ const songRepository = new SongRepository();
 const songService = new SongService(songRepository);
 const songController = new SongController(songService);
 
-songRouter.get('/', songController.getAllSongs)
+songRouter.get('/', songController.getAllSongs);
+
 export default songRouter;
