@@ -1,6 +1,4 @@
-interface IAuthRepository {
-
-}
+import { IAuthRepository } from "../../domain/interfaces/IAuth.repository";
 
 class AuthRepository implements IAuthRepository {
 

@@ -1,4 +1,4 @@
-import AuthRepository from "../infrastructure/repository/auth.repository";
+import AuthRepository from "../infrastructure/repositories/auth.repository";
 
 class AuthService {
     constructor(private authRepository: AuthRepository) {}

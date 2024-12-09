@@ -1,5 +1,5 @@
 import { Router } from "express";
-import PlaylistRepository from "../infrastructure/repository/playlist.repository";
+import PlaylistRepository from "../infrastructure/repositories/playlist.repository";
 import PlaylistService from "../application/playlist.service";
 import PlaylistController from "../presentation/playlist.controller";
 
