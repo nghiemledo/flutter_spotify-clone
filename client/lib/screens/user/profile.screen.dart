@@ -13,13 +13,10 @@ class ProfileScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(219, 149, 50, 25),
-              Colors.black
-            ], // Chuyển màu từ tím sang đen
+            colors: [Color.fromARGB(219, 149, 50, 25), Colors.black],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: [0.1, 1.0], // Điểm dừng của gradient
+            stops: [0.1, 1.0],
           ),
         ),
         child: Column(
@@ -33,53 +30,53 @@ class ProfileScreen extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.pop(context);
+                Navigator.pop(context);
               },
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(children: [
-                GestureDetector(
-                  onTap: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const EditUserScreen()),
-                    )
-                  },
-                  child: const CircleAvatar(
-                    radius: 60,
-                    backgroundImage: NetworkImage(
-                      "https://ls1.in/avEjH", // Ảnh đại diện.
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EditUserScreen(),
+                        ),
+                      );
+                    },
+                    child: const CircleAvatar(
+                      radius: 60,
+                      backgroundImage: NetworkImage(
+                        "https://ls1.in/avEjH", // Ảnh đại diện.
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 20),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Tên Người dùng",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "0 người theo dõi",
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                )
-              ]),
+                  const SizedBox(width: 20),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Tên Người dùng",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "0 người theo dõi",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -87,15 +84,16 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   OutlinedButton(
                     child: const Text(
-                      "Chinh sửa",
+                      "Chỉnh sửa",
                       style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: () => {
+                    onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const EditUserScreen(),
-                          ))
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EditUserScreen(),
+                        ),
+                      );
                     },
                   ),
                   const SizedBox(width: 10),
@@ -103,29 +101,26 @@ class ProfileScreen extends StatelessWidget {
                     Icons.more_vert,
                     color: Colors.grey,
                     size: 32,
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
       bottomNavigationBar: Container(
         color: Colors.black,
         child: Column(
-          mainAxisSize:
-              MainAxisSize.min, // Đảm bảo column chỉ chiếm không gian cần thiết
+          mainAxisSize: MainAxisSize.min,
           children: [
-            const SongWidget(), // Hiển thị song widget ở dưới
+            const SongWidget(),
             NavigationWidget(
               currentIndex: 2,
               onTabSelected: (index) {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MainScreen(
-                      initialPage: index,
-                    ),
+                    builder: (context) => MainScreen(initialPage: index),
                   ),
                 );
               },

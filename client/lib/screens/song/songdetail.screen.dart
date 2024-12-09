@@ -21,18 +21,32 @@ class SongDetailScreen extends StatelessWidget {
           child: Column(
             children: [
               // Thanh tiêu đề
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 30),
-                  Expanded(
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: Colors.white,
+                        size: 42,
+                      )),
+                  const Expanded(
                     child: Column(
                       children: [
-                        Text("ĐANG PHÁT TỪ TÌM KIẾM", style: TextStyle(color: Colors.white, fontSize: 10)),
-                        Text("Lượt tìm kiếm gần đây", style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                        Text("ĐANG PHÁT TỪ TÌM KIẾM",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 10)),
+                        Text("Lượt tìm kiếm gần đây",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
-                  Icon(Icons.more_vert, color: Colors.white, size: 30),
+                  const Icon(Icons.more_vert, color: Colors.white, size: 30),
                 ],
               ),
               const SizedBox(height: 60),
@@ -51,10 +65,18 @@ class SongDetailScreen extends StatelessWidget {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text("Trưởng Thành Không Vui", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
-                    Text("Đoàn Lâm,CT", style: TextStyle(color: Colors.white70, fontSize: 18)),
-                  ]),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Trưởng Thành Không Vui",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold)),
+                        Text("Đoàn Lâm,CT",
+                            style:
+                                TextStyle(color: Colors.white70, fontSize: 18)),
+                      ]),
                   Icon(Icons.add_circle_outline, color: Colors.white, size: 30)
                 ],
               ),
@@ -71,8 +93,10 @@ class SongDetailScreen extends StatelessWidget {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("1:11", style: TextStyle(color: Colors.white70, fontSize: 12)),
-                  Text("4:43", style: TextStyle(color: Colors.white70, fontSize: 12)),
+                  Text("1:11",
+                      style: TextStyle(color: Colors.white70, fontSize: 12)),
+                  Text("4:43",
+                      style: TextStyle(color: Colors.white70, fontSize: 12)),
                 ],
               ),
               const SizedBox(height: 20),
@@ -92,7 +116,8 @@ class SongDetailScreen extends StatelessWidget {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.edgesensor_high_outlined, color: Colors.white, size: 25),
+                  Icon(Icons.edgesensor_high_outlined,
+                      color: Colors.white, size: 25),
                   Row(
                     children: [
                       Icon(Icons.share_outlined, color: Colors.white, size: 25),
@@ -115,7 +140,11 @@ class SongDetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Bản xem trước bài hát", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Text("Bản xem trước bài hát",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold)),
                     const SizedBox(height: 20),
                     const Expanded(
                       child: Text(
@@ -125,11 +154,15 @@ class SongDetailScreen extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Lyrics()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Lyrics()));
                       },
                       child: const Text(
                         "Hiện lời bài hát",
-                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                     )
                   ],
@@ -139,13 +172,15 @@ class SongDetailScreen extends StatelessWidget {
               // Giới thiệu nghệ sĩ
               Card(
                 color: Colors.black,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
                 elevation: 10,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ClipRRect(
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                      borderRadius:
+                          const BorderRadius.vertical(top: Radius.circular(12)),
                       child: Image.network(
                         "https://cdn.pixabay.com/photo/2015/02/21/20/05/dj-644557_640.jpg",
                         width: double.infinity,
@@ -161,12 +196,19 @@ class SongDetailScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Sơn Tùng M-TP', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
-                                Text('1,7 Tr người nghe hàng tháng', style: TextStyle(color: Colors.white70, fontSize: 16)),
+                                Text('Sơn Tùng M-TP',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold)),
+                                Text('1,7 Tr người nghe hàng tháng',
+                                    style: TextStyle(
+                                        color: Colors.white70, fontSize: 16)),
                                 SizedBox(height: 8),
                                 Text(
                                   'Nguyễn Thanh Tùng, born in 1994, known professionally as Sơn Tùng M-TP, is a Vietnamese singer, songwriter, producer, and actor. He is not only ...',
-                                  style: TextStyle(color: Colors.white60, fontSize: 14),
+                                  style: TextStyle(
+                                      color: Colors.white60, fontSize: 14),
                                   maxLines: 3,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -175,10 +217,12 @@ class SongDetailScreen extends StatelessWidget {
                           ),
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.white, width: 1),
+                              side: const BorderSide(
+                                  color: Colors.white, width: 1),
                             ),
                             onPressed: () {},
-                            child: const Text("Theo dõi", style: TextStyle(color: Colors.white)),
+                            child: const Text("Theo dõi",
+                                style: TextStyle(color: Colors.white)),
                           ),
                         ],
                       ),
@@ -199,7 +243,10 @@ class SongDetailScreen extends StatelessWidget {
                   children: [
                     const Text(
                       "Khám phá Đoàn Lâm",
-                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),
                     Row(
@@ -223,8 +270,12 @@ class SongDetailScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text("Các bài hát của Đoàn Lâm", style: TextStyle(color: Colors.white, fontSize: 17)),
-                                  Text("Đoàn Lâm", style: TextStyle(color: Colors.white70, fontSize: 12)),
+                                  Text("Các bài hát của Đoàn Lâm",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 17)),
+                                  Text("Đoàn Lâm",
+                                      style: TextStyle(
+                                          color: Colors.white70, fontSize: 12)),
                                 ],
                               ),
                             ),
@@ -249,7 +300,9 @@ class SongDetailScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text("Tương tự như Trưởng Thành Không Vui", style: TextStyle(color: Colors.white, fontSize: 17)),
+                                  Text("Tương tự như Trưởng Thành Không Vui",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 17)),
                                 ],
                               ),
                             ),
@@ -274,7 +327,9 @@ class SongDetailScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text("Các bài hát nổi bật", style: TextStyle(color: Colors.white, fontSize: 17)),
+                                  Text("Các bài hát nổi bật",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 17)),
                                 ],
                               ),
                             ),

@@ -1,3 +1,4 @@
+import 'package:client/main.dart';
 import 'package:client/screens/playlist/playlist.create.screen.dart';
 import 'package:client/screens/user/favoritelist.screen.dart';
 import 'package:client/screens/user/profile.screen.dart';
@@ -89,12 +90,16 @@ class _LibraryScreenState extends State<LibraryScreen>
                           // Xem chi tiết hồ sơ
                           GestureDetector(
                             onTap: () {
-                              _hideSlideMenu();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProfileScreen()));
+                              Future.delayed(const Duration(milliseconds: 50),
+                                  () {
+                                _hideSlideMenu();
+                                Navigator.push(
+                                    // ignore: use_build_context_synchronously
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ProfileScreen()));
+                              });
                             },
                             child: const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,12 +220,24 @@ class _LibraryScreenState extends State<LibraryScreen>
                       Row(
                         children: [
                           IconButton(
-                            onPressed: () {}, // Tính năng tìm kiếm.
-                            icon: const Icon(Icons.search, color: Colors.grey),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const MainScreen(
+                                            initialPage: 1,
+                                          )));
+                            }, // Tính năng tìm kiếm.
+                            icon: const Icon(Icons.search,
+                                color: Colors.grey, size: 40),
                           ),
                           IconButton(
                             onPressed: _showAddMenu, // Hiển thị menu thêm.
-                            icon: const Icon(Icons.add, color: Colors.grey),
+                            icon: const Icon(
+                              Icons.add,
+                              color: Colors.grey,
+                              size: 40,
+                            ),
                           ),
                         ],
                       ),
