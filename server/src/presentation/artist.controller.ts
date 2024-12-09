@@ -15,8 +15,7 @@ class ArtistController {
         data: artists,
       });
     } catch (error: any) {
-      console.log(error);
-      response.status(500).json(new ValidationError(error.message, ""));
+       response.status(500).json(new ValidationError(error.message, ""));
     }
   }
 
