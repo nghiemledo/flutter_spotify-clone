@@ -15,7 +15,7 @@ class ArtistController {
         data: artists,
       });
     } catch (error: any) {
-       response.status(500).json(new ValidationError(error.message, ""));
+       response.status(500).json(error.message);
     }
   }
 

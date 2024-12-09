@@ -56,7 +56,7 @@ class GenreController {
             }
             response.status(201).json({
                 message: "Create genre successfully",
-                result
+                data: result
             })
         } catch (error: any) {
             response.status(500).json({message: "Internal server error"})
@@ -74,7 +74,8 @@ class GenreController {
             const isSameGenre = existingGenre.description == name 
             && existingGenre.description == description
             if(isSameGenre) {
-                throw new ValidationError("No change detected", "genre")
+                response.status(400).json("No change detected");
+                return;
             } else {
                 const updatedGenre = new GenreVM(name, description);
                 const genre = await this.genreService.updateGenre(id, updatedGenre);

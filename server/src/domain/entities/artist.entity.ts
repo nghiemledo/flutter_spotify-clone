@@ -6,7 +6,7 @@ export interface IArtist extends Document {
     avatarUrl: string;
     songs: mongoose.Types.ObjectId[];
     albums: mongoose.Types.ObjectId[];
-    followers: mongoose.Types.ObjectId[];
+    followers: mongoose.Types.ObjectId[];   
 };
 
 const ArtistSchema: Schema = new Schema(

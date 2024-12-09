@@ -10,6 +10,8 @@ const genreController = new GenreController(genreService);
 
 genreRouter.get('/', genreController.getAllGenres.bind(genreController));
 genreRouter.post('/', genreController.createGenre.bind(genreController));
-
+genreRouter.get('/:id', genreController.getGenreById.bind(genreController));
+genreRouter.put('/:id', genreController.updateGenre.bind(genreController));
+genreRouter.delete('/:id', genreController.deleteGenre.bind(genreController));
 
 export default genreRouter;
