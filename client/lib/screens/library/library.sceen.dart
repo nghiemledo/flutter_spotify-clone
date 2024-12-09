@@ -1,7 +1,5 @@
 import 'package:client/main.dart';
 import 'package:client/screens/playlist/playlist.create.screen.dart';
-import 'package:client/screens/user/favoritelist.screen.dart';
-import 'package:client/screens/user/profile.screen.dart';
 import 'package:flutter/material.dart';
 
 class LibraryScreen extends StatefulWidget {
@@ -93,12 +91,8 @@ class _LibraryScreenState extends State<LibraryScreen>
                               Future.delayed(const Duration(milliseconds: 50),
                                   () {
                                 _hideSlideMenu();
-                                Navigator.push(
-                                    // ignore: use_build_context_synchronously
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ProfileScreen()));
+                                // ignore: use_build_context_synchronously
+                                Navigator.pushNamed(context, '/user-profile');
                               });
                             },
                             child: const Column(
@@ -255,12 +249,7 @@ class _LibraryScreenState extends State<LibraryScreen>
                             "https://example.com/favorite_image.jpg", // Ảnh mục thư viện.
                         text: "Bài hát đã thích", // Tiêu đề mục.
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const FavoriteListScreen(),
-                            ),
-                          );
+                          Navigator.pushNamed(context, '/favorite-list');
                         },
                       ),
                       _buildLibraryItem(

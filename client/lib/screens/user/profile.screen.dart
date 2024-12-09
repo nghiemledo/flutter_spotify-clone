@@ -29,8 +29,7 @@ class ProfileScreen extends StatelessWidget {
                 color: Colors.white,
               ),
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
+                Navigator.pushNamed(context, '/');
               },
             ),
             const SizedBox(height: 20),
