@@ -47,7 +47,7 @@ class SongWidget extends StatelessWidget {
                 IconButton(
                     onPressed: () => {},
                     icon: const Icon(Icons.pause, color: Colors.white)),
-                const SizedBox(width: 16),
+                const SizedBox(width: 18),
                 IconButton(
                     onPressed: () => {},
                     icon: const Icon(Icons.skip_next, color: Colors.white)),
