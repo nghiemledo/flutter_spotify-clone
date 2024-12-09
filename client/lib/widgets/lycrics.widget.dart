@@ -31,38 +31,42 @@ class _LyricsState extends State<Lyrics> {
               ),
               child: Row(
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios_outlined,
-                          color: Colors.white, size: 30),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_outlined,
+                        color: Colors.white, size: 30),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
+                  const SizedBox(width: 10),
                   const Expanded(
                     flex: 8,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Chúng ta của hiện tại",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                            )),
-                        Text("Sơn Tùng M-TP",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                            ))
+                        Text(
+                          "Chúng ta của hiện tại",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                          ),
+                        ),
+                        Text(
+                          "Sơn Tùng M-TP",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  const Expanded(
-                      flex: 1,
-                      child: Icon(Icons.more_vert,
-                          color: Colors.white, size: 30)),
+                  IconButton(
+                    icon: const Icon(Icons.more_vert,
+                        color: Colors.white, size: 30),
+                    onPressed: () {},
+                  ),
                 ],
               ),
             ),
@@ -70,8 +74,11 @@ class _LyricsState extends State<Lyrics> {
             // Lời bài hát hiển thị
             const Expanded(
               child: SingleChildScrollView(
-                  child: Text("Biết em thương người ấy đã rất nhiều ",
-                      style: TextStyle(color: Colors.white, fontSize: 25))),
+                child: Text(
+                  "Biết em thương người ấy đã rất nhiều ",
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+              ),
             ),
             // Thanh công cụ và chạy nhạc
             Container(
@@ -86,48 +93,58 @@ class _LyricsState extends State<Lyrics> {
               ),
               child: Column(
                 children: [
+                  // Thanh Slider
                   Slider(
-                      value: 71,
-                      min: 0,
-                      max: 283,
-                      activeColor: Colors.white,
-                      inactiveColor: const Color(0xFF272727),
-                      onChanged: (value) {}),
+                    value: 71,
+                    min: 0,
+                    max: 283,
+                    activeColor: Colors.white,
+                    inactiveColor: const Color(0xFF272727),
+                    onChanged: (value) {},
+                  ),
+                  // Thời gian bài hát
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("1:11",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
-                          )),
-                      Text("4:43",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
-                          ))
+                      Text(
+                        "1:11",
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
+                      ),
+                      Text(
+                        "4:43",
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
+                  // Nút điều khiển nhạc
                   const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(flex: 1, child: SizedBox()),
-                      Expanded(
-                          flex: 8,
-                          child: Icon(Icons.play_circle,
-                              color: Colors.white, size: 70)),
-                      Expanded(
-                          flex: 1,
-                          child: Icon(Icons.share_outlined,
-                              color: Colors.white, size: 30)),
+                      Icon(
+                        Icons.play_circle,
+                        color: Colors.white,
+                        size: 70,
+                      ),
+                      SizedBox(width: 20),
+                      Icon(
+                        Icons.share_outlined,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 }
-
