@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from 'dotenv';
+import 'express-async-errors';
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import mongoose from "mongoose";
@@ -11,8 +12,8 @@ import playlistRouter from "./src/routes/playlist.routes";
 
 const app = express();
 dotenv.config();
-app.use(bodyParser.urlencoded());
-app.use(bodyParser.json());
+app.use(express.urlencoded());
+app.use(express.json());
 app.use(morgan("combined"));
 
 const PORT = process.env.PORT;

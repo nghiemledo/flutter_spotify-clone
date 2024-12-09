@@ -13,8 +13,6 @@ export interface IUser extends Document {
     discoverList: mongoose.Types.ObjectId[];
     followedArtist: mongoose.Types.ObjectId[];
     playlists: mongoose.Types.ObjectId[];
-    createdAt: Date;
-    updatedAt: Date;
 };
 
 const UserSchema: Schema = new Schema (
