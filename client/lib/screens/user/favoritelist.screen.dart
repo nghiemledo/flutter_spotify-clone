@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:client/main.dart';
 import 'package:client/widgets/navigation.widget.dart';
 import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class FavoriteListScreen extends StatefulWidget {
   const FavoriteListScreen({super.key});
@@ -13,12 +16,38 @@ class FavoriteListScreen extends StatefulWidget {
 
 class _FavoriteListScreenState extends State<FavoriteListScreen> {
   bool _isFavorite = false;
+  // Khởi tạo danh sách nhạc yêu thích
+  List<dynamic> _favoriteSongs = [];
 
   // Hàm xử lý yêu thích
   void _handlerFavorite() {
     setState(() {
       _isFavorite = !_isFavorite; // Thay đổi trạng thái yêu thích
     });
+  }
+
+// Hàm fetch dữ liệu từ API
+  Future<void> _fetchFavoriteSongs() async {
+    final url = Uri.parse('http://localhost:3000/api/songs/favorites');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        setState(() {
+          _favoriteSongs = data;
+        });
+      } else {
+        print('Failed to load favorite songs');
+      }
+    } catch (e) {
+      print('Error fetching songs: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFavoriteSongs(); // Gọi API khi khởi tạo
   }
 
   // Hàm mở Bottom Sheet
@@ -141,14 +170,18 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
               // Danh sách nhạc
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return _buildMusicItem();
-                    },
-                  ),
-                ),
+                    padding: const EdgeInsets.all(16.0),
+                    child: _favoriteSongs.isEmpty
+                        // Đang tải
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ListView.builder(
+                            itemCount: _favoriteSongs.length,
+                            itemBuilder: (context, index) {
+                              final song = _favoriteSongs[index];
+                              return _buildMusicItem(song);
+                            })),
               ),
               const SongWidget(),
               NavigationWidget(
@@ -202,7 +235,7 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
   }
 
   // Xây dựng một mục nhạc trong danh sách
-  Widget _buildMusicItem() {
+  Widget _buildMusicItem(Map<String, dynamic> song) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: Row(
@@ -210,24 +243,28 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
         children: [
           Row(
             children: [
-              SizedBox(
-                width: 50,
-                height: 50,
-                child: Image.network(
-                  "https://ls1.in/avEjH",
+              Container(
+                width: 80.0,
+                height: 80.0,
+                decoration: BoxDecoration(
+                  color: Colors.white, // Màu nền trắng khi ảnh bị lỗi
+                  image: DecorationImage(
+                    image: NetworkImage(song['image'] ?? ''),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Tên bài hát',
-                    style: TextStyle(fontSize: 15, color: Colors.white),
+                    song['name'] ?? 'Tên bài hát',
+                    style: const TextStyle(fontSize: 15, color: Colors.white),
                   ),
                   Text(
-                    'Ca sĩ',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    song['artist'] ?? 'Ca sĩ',
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ],
               ),
