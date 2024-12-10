@@ -1,7 +1,7 @@
 import { Router } from "express";
 import AuthController from "../presentation/auth.controller";
 import AuthService from "../application/auth.service";
-import AuthRepository from "../infrastructure/repository/auth.repository";
+import AuthRepository from "../infrastructure/repositories/auth.repository";
 
 const authRouter = Router();
 const authRepository = new AuthRepository();
