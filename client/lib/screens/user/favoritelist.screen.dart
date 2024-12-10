@@ -16,19 +16,20 @@ class FavoriteListScreen extends StatefulWidget {
 
 class _FavoriteListScreenState extends State<FavoriteListScreen> {
   bool _isFavorite = false;
-  // Khởi tạo danh sách nhạc yêu thích
+  // danh sách nhạc yêu thích
   List<dynamic> _favoriteSongs = [];
 
   // Hàm xử lý yêu thích
   void _handlerFavorite() {
     setState(() {
-      _isFavorite = !_isFavorite; // Thay đổi trạng thái yêu thích
+      _isFavorite = !_isFavorite; 
     });
   }
 
 // Hàm fetch dữ liệu từ API
   Future<void> _fetchFavoriteSongs() async {
-    final url = Uri.parse('http://localhost:3000/api/songs/favorites');
+    final url = Uri.parse(
+        'https://66e2f263494df9a478e3be18.mockapi.io/api/v1/contacts');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -51,7 +52,7 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
   }
 
   // Hàm mở Bottom Sheet
-  void _showBottomSheet() {
+  void _showBottomSheet(Map<String, dynamic> song) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.black,
@@ -74,7 +75,7 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _buildSongInfo(),
+                _buildSongInfo(song),
                 const Divider(color: Colors.grey),
                 _buildActionRow(
                   Icons.favorite,
@@ -132,11 +133,11 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
                 ),
               ),
               // Số lượng bài hát
-              const Padding(
-                padding: EdgeInsets.only(left: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
                 child: Text(
-                  '1 Bài hát',
-                  style: TextStyle(
+                  '${_favoriteSongs.length} bài hát',
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 10,
                   ),
@@ -244,14 +245,22 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
           Row(
             children: [
               Container(
-                width: 80.0,
-                height: 80.0,
+                width: 60.0,
+                height: 60.0,
                 decoration: BoxDecoration(
-                  color: Colors.white, // Màu nền trắng khi ảnh bị lỗi
                   image: DecorationImage(
-                    image: NetworkImage(song['image'] ?? ''),
+                    image: NetworkImage(
+                        song['image'] ?? 'https://picsum.photos/80/80'),
                     fit: BoxFit.cover,
                   ),
+                ),
+                child: Image.network(
+                  song['image'] ?? 'https://picsum.photos/80/80',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.network(
+                        'https://picsum.photos/80/80'); // Ảnh mặc định 
+                  },
                 ),
               ),
               const SizedBox(width: 8),
@@ -271,7 +280,7 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
             ],
           ),
           IconButton(
-            onPressed: _showBottomSheet,
+            onPressed: () => _showBottomSheet(song),
             icon: const Icon(
               Icons.more_vert_sharp,
               size: 24,
@@ -284,27 +293,34 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
   }
 
   // Xây dựng thông tin bài hát
-  Widget _buildSongInfo() {
+  Widget _buildSongInfo(song) {
     return Row(
       children: [
         SizedBox(
           width: 50,
           height: 50,
           child: Image.network(
-            "https://ls1.in/avEjH",
+            song['image'] ??
+                'https://picsum.photos/80/80', // Ảnh mặc định 
+            fit:
+                BoxFit.cover, 
+            errorBuilder: (context, error, stackTrace) {
+              return Image.network(
+                  'https://picsum.photos/80/80'); // Ảnh mặc định 
+            },
           ),
         ),
         const SizedBox(width: 8),
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Tên bài hát',
-              style: TextStyle(fontSize: 15, color: Colors.white),
+              song['name'],
+              style: const TextStyle(fontSize: 15, color: Colors.white),
             ),
             Text(
-              'Ca sĩ',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
+              song['artist'],
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
           ],
         ),
