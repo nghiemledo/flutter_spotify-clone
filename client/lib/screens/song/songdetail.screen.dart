@@ -1,11 +1,14 @@
+import 'package:client/widgets/playmusic.dart';
 import 'package:flutter/material.dart';
 import 'package:client/widgets/lycrics.widget.dart';
+import 'package:get/get.dart';
 
 class SongDetailScreen extends StatelessWidget {
   const SongDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final MusicController musicController = Get.put(MusicController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -51,35 +54,53 @@ class SongDetailScreen extends StatelessWidget {
               ),
               const SizedBox(height: 60),
               // Hình ảnh ca sĩ
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+              Container(
+                width: 300,
+                height: 300,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20), // Bo góc
+                ),
                 child: Image.network(
-                  "https://cdn.pixabay.com/photo/2015/02/21/20/05/dj-644557_640.jpg",
-                  height: 370,
-                  width: double.infinity,
+                  (musicController.coverImageUrl.value),
                   fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    } else {
+                      return const Center(
+                          child:
+                              CircularProgressIndicator()); // Hiển thị vòng xoay khi đang tải
+                    }
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.network(
+                        'https://picsum.photos/300/300'); // Ảnh mặc định nếu có lỗi
+                  },
                 ),
               ),
               const SizedBox(height: 60),
               // Tên bài hát
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Trưởng Thành Không Vui",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold)),
-                        Text("Đoàn Lâm,CT",
-                            style:
-                                TextStyle(color: Colors.white70, fontSize: 18)),
-                      ]),
-                  Icon(Icons.add_circle_outline, color: Colors.white, size: 30)
-                ],
-              ),
+              Obx(() {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(musicController.songName.value,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold)),
+                          Text(musicController.artistName.value,
+                              style: const TextStyle(
+                                  color: Colors.white70, fontSize: 18)),
+                        ]),
+                    const Icon(Icons.add_circle_outline,
+                        color: Colors.white, size: 30)
+                  ],
+                );
+              }),
               // Thanh chạy nhạc
               Slider(
                 value: 71,
@@ -101,14 +122,53 @@ class SongDetailScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               // Thanh công cụ nhạc
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.shuffle, color: Colors.white, size: 30),
-                  Icon(Icons.skip_previous, color: Colors.white, size: 55),
-                  Icon(Icons.play_circle, color: Colors.white, size: 70),
-                  Icon(Icons.skip_next, color: Colors.white, size: 55),
-                  Icon(Icons.refresh, color: Colors.white, size: 30),
+                  const Icon(Icons.shuffle, color: Colors.white, size: 30),
+                  const SizedBox(width: 20),
+                  GestureDetector(
+                    onTap: () {
+                      musicController
+                          .skipPrevious(); // Gọi phương thức để chuyển bài hát
+                    },
+                    child: const Icon(
+                      Icons.skip_previous,
+                      color: Colors.white,
+                      size: 55,
+                    ),
+                  ),
+
+                  const SizedBox(width: 20),
+                  // Dừng và phát nhạc
+                  Obx(() {
+                    return GestureDetector(
+                      onTap: () {
+                        musicController.togglePlayPause();
+                      },
+                      child: Icon(
+                        musicController.isPlaying.value
+                            ? Icons.pause_circle_filled
+                            : Icons.play_circle_fill,
+                        color: Colors.white,
+                        size: 70,
+                      ),
+                    );
+                  }),
+                  const SizedBox(width: 20),
+                  GestureDetector(
+                    onTap: () {
+                      musicController
+                          .skipNext(); // Gọi phương thức để chuyển bài hát
+                    },
+                    child: const Icon(
+                      Icons.skip_next,
+                      color: Colors.white,
+                      size: 55,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  const Icon(Icons.refresh, color: Colors.white, size: 30),
                 ],
               ),
               const SizedBox(height: 20),
