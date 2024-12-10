@@ -1,6 +1,9 @@
 import 'package:client/screens/home/home.screen.dart';
 import 'package:client/screens/library/library.sceen.dart';
 import 'package:client/screens/search/search.screen.dart';
+import 'package:client/screens/song/songdetail.screen.dart';
+import 'package:client/screens/user/favoritelist.screen.dart';
+import 'package:client/screens/user/profile.screen.dart';
 import 'package:client/widgets/navigation.widget.dart';
 import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
@@ -14,22 +17,39 @@ class SpotifyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MainScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/search': (context) => const SearchScreen(),
+        '/library': (context) => const LibraryScreen(),
+        '/song-detail': (context) => const SongDetailScreen(),
+        '/user-profile': (context) => const ProfileScreen(),
+        '/favorite-list': (context) => const FavoriteListScreen(),
+      },
     );
   }
 }
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final int initialPage;
+
+  const MainScreen({super.key, this.initialPage = 0});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 0;
+  late int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialPage;
+  }
 
   final List<Widget> _pages = [
     const HomeScreen(),
@@ -40,25 +60,18 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: _pages[_currentIndex],
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          _pages[_currentIndex],
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SongWidget(),
-                NavigationWidget(
-                  currentIndex: _currentIndex,
-                  onTabSelected: (index) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                ),
-              ],
-            ),
+          const SongWidget(),
+          NavigationWidget(
+            currentIndex: _currentIndex,
+            onTabSelected: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
           ),
         ],
       ),
