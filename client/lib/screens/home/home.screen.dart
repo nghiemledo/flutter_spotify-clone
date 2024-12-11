@@ -1,3 +1,6 @@
+import 'package:client/main.dart';
+import 'package:client/widgets/navigation.widget.dart';
+import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -6,292 +9,312 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
         backgroundColor: Colors.black,
-        elevation: 0,
-        title: const Text(
-          "09:27",
-          style: TextStyle(color: Colors.white, fontSize: 16),
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          elevation: 0,
+          title: const Text(
+            "09:27",
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.notifications, color: Colors.white),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.settings, color: Colors.white),
+              onPressed: () {},
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          // Filters với khả năng cuộn ngang
-          const SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 20,
-                  backgroundImage: AssetImage('assets/images/avatar.jpg'),
+        body: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            // Filters với khả năng cuộn ngang
+            const SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundImage: AssetImage('assets/images/avatar.jpg'),
+                  ),
+                  SizedBox(width: 10),
+                  FilterChip(label: "All", isActive: true),
+                  SizedBox(width: 10),
+                  FilterChip(label: "Wrapped"),
+                  SizedBox(width: 10),
+                  FilterChip(label: "Music"),
+                  SizedBox(width: 10),
+                  FilterChip(label: "Podcasts"),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // GridView - Thành phần mới
+            SizedBox(
+              height:
+                  256, // Chiều cao phù hợp với 2 dòng (mỗi dòng 50px + khoảng cách)
+              child: GridView.builder(
+                itemCount: 8, // Tổng số phần tử trong GridView
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // 2 cột
+                  crossAxisSpacing: 8, // Khoảng cách ngang giữa các cột
+                  mainAxisSpacing: 8, // Khoảng cách dọc giữa các hàng
+                  mainAxisExtent: 50, // Chiều cao mỗi ô là 50px
                 ),
-                SizedBox(width: 10),
-                FilterChip(label: "All", isActive: true),
-                SizedBox(width: 10),
-                FilterChip(label: "Wrapped"),
-                SizedBox(width: 10),
-                FilterChip(label: "Music"),
-                SizedBox(width: 10),
-                FilterChip(label: "Podcasts"),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
+                physics:
+                    const NeverScrollableScrollPhysics(), // Tắt cuộn độc lập
+                itemBuilder: (context, index) {
+                  final items = [
+                    {
+                      "title": "G-DRAGON",
+                      "subtitle": "Artist",
+                      "image": "assets/images/artist4.jpg"
+                    },
+                    {
+                      "title": "Bạn Đời",
+                      "subtitle": "Album - Karik",
+                      "image": "assets/images/album.jpg"
+                    },
+                    {
+                      "title": "Live Concert",
+                      "subtitle": "Concert",
+                      "image": "assets/images/concert.jpg"
+                    },
+                    {
+                      "title": "Soul Of The Forest",
+                      "subtitle": "Album",
+                      "image": "assets/images/forest.jpg"
+                    },
+                    {
+                      "title": "Rất Lâu Rồi Mới Khóc",
+                      "subtitle": "Live Version",
+                      "image": "assets/images/live_song.jpg"
+                    },
+                    {
+                      "title": "Liked Songs",
+                      "subtitle": "3 songs added",
+                      "image": "assets/images/liked_songs.jpg"
+                    },
+                    {
+                      "title": "Có Một Nơi Như Thế",
+                      "subtitle": "Single",
+                      "image": "assets/images/single.jpg"
+                    },
+                    {
+                      "title": "The Masked Singer",
+                      "subtitle": "Live Show",
+                      "image": "assets/images/masked_singer.jpg"
+                    },
+                  ];
 
-          // GridView - Thành phần mới
-          SizedBox(
-            height:
-                256, // Chiều cao phù hợp với 2 dòng (mỗi dòng 50px + khoảng cách)
-            child: GridView.builder(
-              itemCount: 8, // Tổng số phần tử trong GridView
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // 2 cột
-                crossAxisSpacing: 8, // Khoảng cách ngang giữa các cột
-                mainAxisSpacing: 8, // Khoảng cách dọc giữa các hàng
-                mainAxisExtent: 50, // Chiều cao mỗi ô là 50px
+                  return GridItem(
+                    title: items[index]["title"]!,
+                    subtitle: items[index]["subtitle"]!,
+                    imageUrl: items[index]["image"]!,
+                  );
+                },
               ),
-              physics: const NeverScrollableScrollPhysics(), // Tắt cuộn độc lập
-              itemBuilder: (context, index) {
-                final items = [
-                  {
-                    "title": "G-DRAGON",
-                    "subtitle": "Artist",
-                    "image": "assets/images/artist4.jpg"
-                  },
-                  {
-                    "title": "Bạn Đời",
-                    "subtitle": "Album - Karik",
-                    "image": "assets/images/album.jpg"
-                  },
-                  {
-                    "title": "Live Concert",
-                    "subtitle": "Concert",
-                    "image": "assets/images/concert.jpg"
-                  },
-                  {
-                    "title": "Soul Of The Forest",
-                    "subtitle": "Album",
-                    "image": "assets/images/forest.jpg"
-                  },
-                  {
-                    "title": "Rất Lâu Rồi Mới Khóc",
-                    "subtitle": "Live Version",
-                    "image": "assets/images/live_song.jpg"
-                  },
-                  {
-                    "title": "Liked Songs",
-                    "subtitle": "3 songs added",
-                    "image": "assets/images/liked_songs.jpg"
-                  },
-                  {
-                    "title": "Có Một Nơi Như Thế",
-                    "subtitle": "Single",
-                    "image": "assets/images/single.jpg"
-                  },
-                  {
-                    "title": "The Masked Singer",
-                    "subtitle": "Live Show",
-                    "image": "assets/images/masked_singer.jpg"
-                  },
-                ];
+            ),
 
-                return GridItem(
-                  title: items[index]["title"]!,
-                  subtitle: items[index]["subtitle"]!,
-                  imageUrl: items[index]["image"]!,
-                );
+            // Banner
+            GestureDetector(
+              onTap: () {
+                // Hành động khi nhấn vào
               },
-            ),
-          ),
-
-          // Banner
-          GestureDetector(
-            onTap: () {
-              // Hành động khi nhấn vào
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: AspectRatio(
-                  aspectRatio: 16 /
-                      9, // Tỷ lệ chuẩn (hoặc thay bằng tỷ lệ của hình ảnh thực tế)
-                  child: Image.asset(
-                    "assets/images/wrapped_banner.jpg",
-                    fit: BoxFit
-                        .cover, // Bao phủ toàn bộ không gian mà vẫn giữ tỷ lệ
-                    width:
-                        double.infinity, // Tự động theo chiều rộng của thiết bị
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: AspectRatio(
+                    aspectRatio: 16 /
+                        9, // Tỷ lệ chuẩn (hoặc thay bằng tỷ lệ của hình ảnh thực tế)
+                    child: Image.asset(
+                      "assets/images/wrapped_banner.jpg",
+                      fit: BoxFit
+                          .cover, // Bao phủ toàn bộ không gian mà vẫn giữ tỷ lệ
+                      width: double
+                          .infinity, // Tự động theo chiều rộng của thiết bị
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
 
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          //end moi
+            //end moi
 
-          // Your Top Mixes
-          const SectionTitle(title: "Your top mixes"),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 150,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: const [
-                MixCard(
-                  title: "Quốc Thiên Mix",
-                  subtitle: "Bằng Kiều, Đình Tiến Đạt",
-                  imageUrl: "assets/images/artist1.jpg",
+            // Your Top Mixes
+            const SectionTitle(title: "Your top mixes"),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 150,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: const [
+                  MixCard(
+                    title: "Quốc Thiên Mix",
+                    subtitle: "Bằng Kiều, Đình Tiến Đạt",
+                    imageUrl: "assets/images/artist1.jpg",
+                  ),
+                  MixCard(
+                    title: "Karik Mix",
+                    subtitle: "Da LAB, SOOBIN",
+                    imageUrl: "assets/images/artist2.jpg",
+                  ),
+                  MixCard(
+                    title: "Hip-hop Mix",
+                    subtitle: "Andrew Gold",
+                    imageUrl: "assets/images/artist3.jpg",
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Recents
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SectionTitle(title: "Recents"),
+                    Text("Show all", style: TextStyle(color: Colors.grey)),
+                  ],
                 ),
-                MixCard(
-                  title: "Karik Mix",
-                  subtitle: "Da LAB, SOOBIN",
-                  imageUrl: "assets/images/artist2.jpg",
-                ),
-                MixCard(
-                  title: "Hip-hop Mix",
-                  subtitle: "Andrew Gold",
-                  imageUrl: "assets/images/artist3.jpg",
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: 120,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: const [
+                      RecentItem(
+                        title: "G-DRAGON",
+                        subtitle: "Artist",
+                        imageUrl: "assets/images/artist4.jpg",
+                      ),
+                      RecentItem(
+                        title: "Liked Songs",
+                        subtitle: "3 songs added",
+                        imageUrl: "assets/images/liked_songs.jpg",
+                        hasBadge: true,
+                      ),
+                      RecentItem(
+                        title: "Bạn Đời",
+                        subtitle: "Album - Karik",
+                        imageUrl: "assets/images/album.jpg",
+                      ),
+                      RecentItem(
+                        title: "New Song",
+                        subtitle: "Album - Sơn Tùng",
+                        imageUrl: "assets/images/new_song.jpg",
+                      ),
+                      RecentItem(
+                        title: "Hits",
+                        subtitle: "Playlist",
+                        imageUrl: "assets/images/playlist.jpg",
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 16),
+            const SizedBox(height: 25),
 
-          // Recents
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SectionTitle(title: "Recents"),
-                  Text("Show all", style: TextStyle(color: Colors.grey)),
+            // Recommended Stations
+            const SectionTitle(title: "Recommended Stations"),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 150,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: const [
+                  StationCard(
+                    title: "Bạn Đời",
+                    artist: "Karik, GDucky",
+                    imageUrl: "assets/images/album2.jpg",
+                  ),
+                  StationCard(
+                    title: "Pop Hits",
+                    artist: "Various Artists",
+                    imageUrl: "assets/images/album3.jpg",
+                  ),
+                  StationCard(
+                    title: "Acoustic Vibes",
+                    artist: "Various Artists",
+                    imageUrl: "assets/images/album4.jpg",
+                  ),
                 ],
               ),
-              const SizedBox(height: 8),
-              SizedBox(
-                height: 120,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: const [
-                    RecentItem(
-                      title: "G-DRAGON",
-                      subtitle: "Artist",
-                      imageUrl: "assets/images/artist4.jpg",
+            ),
+            const SizedBox(height: 25),
+
+            // Jump Back In
+            const SectionTitle(title: "Jump back in"),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 150,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: const [
+                  JumpBackCard(
+                    title: "Voi bạn đơn",
+                    subtitle: "Playlist",
+                    imageUrl: "assets/images/jump_back_1.jpg",
+                  ),
+                  JumpBackCard(
+                    title: "Chill Mix",
+                    subtitle: "HIEUTHUHAI, Karik, Jack - J97 and more",
+                    imageUrl: "assets/images/jump_back_2.jpg",
+                  ),
+                  JumpBackCard(
+                    title: "Đôi Tư",
+                    subtitle: "Single - Andree",
+                    imageUrl: "assets/images/jump_back_3.jpg",
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        // bottomNavigationBar: BottomNavigationBar(
+        //   backgroundColor: Colors.black,
+        //   selectedItemColor: Colors.white,
+        //   unselectedItemColor: Colors.grey,
+        //   items: const [
+        //     BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        //     BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+        //     BottomNavigationBarItem(
+        //         icon: Icon(Icons.library_music), label: "Your Library"),
+        //   ],
+        // ),
+        bottomNavigationBar: Container(
+          color: Colors.black,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SongWidget(),
+              NavigationWidget(
+                currentIndex: 0,
+                onTabSelected: (index) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MainScreen(initialPage: index),
                     ),
-                    RecentItem(
-                      title: "Liked Songs",
-                      subtitle: "3 songs added",
-                      imageUrl: "assets/images/liked_songs.jpg",
-                      hasBadge: true,
-                    ),
-                    RecentItem(
-                      title: "Bạn Đời",
-                      subtitle: "Album - Karik",
-                      imageUrl: "assets/images/album.jpg",
-                    ),
-                    RecentItem(
-                      title: "New Song",
-                      subtitle: "Album - Sơn Tùng",
-                      imageUrl: "assets/images/new_song.jpg",
-                    ),
-                    RecentItem(
-                      title: "Hits",
-                      subtitle: "Playlist",
-                      imageUrl: "assets/images/playlist.jpg",
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             ],
           ),
-          const SizedBox(height: 25),
-
-          // Recommended Stations
-          const SectionTitle(title: "Recommended Stations"),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 150,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: const [
-                StationCard(
-                  title: "Bạn Đời",
-                  artist: "Karik, GDucky",
-                  imageUrl: "assets/images/album2.jpg",
-                ),
-                StationCard(
-                  title: "Pop Hits",
-                  artist: "Various Artists",
-                  imageUrl: "assets/images/album3.jpg",
-                ),
-                StationCard(
-                  title: "Acoustic Vibes",
-                  artist: "Various Artists",
-                  imageUrl: "assets/images/album4.jpg",
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 25),
-
-          // Jump Back In
-          const SectionTitle(title: "Jump back in"),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 150,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: const [
-                JumpBackCard(
-                  title: "Voi bạn đơn",
-                  subtitle: "Playlist",
-                  imageUrl: "assets/images/jump_back_1.jpg",
-                ),
-                JumpBackCard(
-                  title: "Chill Mix",
-                  subtitle: "HIEUTHUHAI, Karik, Jack - J97 and more",
-                  imageUrl: "assets/images/jump_back_2.jpg",
-                ),
-                JumpBackCard(
-                  title: "Đôi Tư",
-                  subtitle: "Single - Andree",
-                  imageUrl: "assets/images/jump_back_3.jpg",
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   backgroundColor: Colors.black,
-      //   selectedItemColor: Colors.white,
-      //   unselectedItemColor: Colors.grey,
-      //   items: const [
-      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-      //     BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.library_music), label: "Your Library"),
-      //   ],
-      // ),
-    );
+        ));
   }
 }
 
@@ -301,7 +324,8 @@ class GridItem extends StatelessWidget {
   final String subtitle;
   final String imageUrl;
 
-  const GridItem({super.key, 
+  const GridItem({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.imageUrl,
@@ -400,7 +424,10 @@ class MixCard extends StatelessWidget {
   final String subtitle;
   final String imageUrl;
   const MixCard(
-      {super.key, required this.title, required this.subtitle, required this.imageUrl});
+      {super.key,
+      required this.title,
+      required this.subtitle,
+      required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -436,7 +463,8 @@ class RecentItem extends StatelessWidget {
   final String imageUrl;
   final bool hasBadge;
 
-  const RecentItem({super.key, 
+  const RecentItem({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.imageUrl,
@@ -502,7 +530,10 @@ class StationCard extends StatelessWidget {
   final String artist;
   final String imageUrl;
   const StationCard(
-      {super.key, required this.title, required this.artist, required this.imageUrl});
+      {super.key,
+      required this.title,
+      required this.artist,
+      required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -535,7 +566,8 @@ class JumpBackCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String imageUrl;
-  const JumpBackCard({super.key, 
+  const JumpBackCard({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.imageUrl,
