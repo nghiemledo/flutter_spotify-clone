@@ -9,5 +9,7 @@ const songService = new SongService(songRepository);
 const songController = new SongController(songService);
 
 songRouter.get('/', songController.getAllSongs);
+// songRouter.post("/upload", uploadSong, songController.createSong);
+// songRouter.get("/stream/:songId", songController.streamSong);
 
 export default songRouter;
