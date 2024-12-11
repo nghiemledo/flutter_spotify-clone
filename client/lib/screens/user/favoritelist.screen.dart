@@ -4,6 +4,7 @@ import 'package:client/main.dart';
 import 'package:client/widgets/navigation.widget.dart';
 import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class FavoriteListScreen extends StatefulWidget {
@@ -15,26 +16,20 @@ class FavoriteListScreen extends StatefulWidget {
 }
 
 class _FavoriteListScreenState extends State<FavoriteListScreen> {
-  bool _isFavorite = false;
-  // Khởi tạo danh sách nhạc yêu thích
+  // danh sách nhạc yêu thích
   List<dynamic> _favoriteSongs = [];
-
-  // Hàm xử lý yêu thích
-  void _handlerFavorite() {
-    setState(() {
-      _isFavorite = !_isFavorite; // Thay đổi trạng thái yêu thích
-    });
-  }
 
 // Hàm fetch dữ liệu từ API
   Future<void> _fetchFavoriteSongs() async {
-    final url = Uri.parse('http://localhost:3000/api/songs/favorites');
+    final url = Uri.parse(
+        'https://66e2f263494df9a478e3be18.mockapi.io/api/v1/contacts');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
-          _favoriteSongs = data;
+          _favoriteSongs =
+              data.where((song) => song['isFavorite'] == true).toList();
         });
       } else {
         print('Failed to load favorite songs');
@@ -44,6 +39,34 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
     }
   }
 
+// Hàm update Yêu thích
+  Future<void> _updateFavoriteSongs(String songId, bool isFavorie) async {
+    final url = Uri.parse(
+        'https://66e2f263494df9a478e3be18.mockapi.io/api/v1/contacts/$songId');
+    try {
+      final response = await http.put(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'isFavorite': isFavorie}),
+      );
+      if (response.statusCode == 200) {
+        print('Favorite status updated successfully');
+      } else {
+        print('Failed to update favorite status: ${response.body}');
+      }
+    } catch (e) {
+      print('Error $e');
+    }
+  }
+
+  // Thay đổi trạng thái yêu thích
+  void _toggleFavorite(Map<String, dynamic> song) {
+    setState(() {
+      song['isFavorite'] = !song['isFavorite'];
+    });
+    _updateFavoriteSongs(song['id'], song['isFavorite']);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -51,7 +74,7 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
   }
 
   // Hàm mở Bottom Sheet
-  void _showBottomSheet() {
+  void _showBottomSheet(Map<String, dynamic> song) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.black,
@@ -74,12 +97,42 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _buildSongInfo(),
+                _buildSongInfo(song),
                 const Divider(color: Colors.grey),
-                _buildActionRow(
-                  Icons.favorite,
-                  "Thêm vào danh sách yêu thích",
-                  _handlerFavorite,
+                const SizedBox(height: 32),
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 200),
+                          child: Icon(
+                            Icons.favorite,
+                            color:
+                                song['isFavorite'] ? Colors.red : Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        GestureDetector(
+                          onTap: () {
+                            _toggleFavorite(song); // Gọi hàm xử lý
+                          },
+                          child: Text(
+                            song['isFavorite']
+                                ? "Xóa khỏi danh sách yêu thích"
+                                : "Thêm vào danh sách yêu thích",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 32,
                 ),
                 _buildActionRow(Icons.add, "Thêm vào danh sách phát", () {}),
                 _buildActionRow(Icons.album, "Đến album", () {}),
@@ -132,11 +185,11 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
                 ),
               ),
               // Số lượng bài hát
-              const Padding(
-                padding: EdgeInsets.only(left: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
                 child: Text(
-                  '1 Bài hát',
-                  style: TextStyle(
+                  '${_favoriteSongs.length} bài hát',
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 10,
                   ),
@@ -201,7 +254,7 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
     );
   }
 
-  // Xây dựng một hàng hành động
+  // Đường dẫn đến album ,ca sĩ
   Widget _buildActionRow(IconData icon, String text, VoidCallback onPressed) {
     return Padding(
       padding: const EdgeInsets.only(top: 16, bottom: 16),
@@ -211,11 +264,7 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
             duration: const Duration(milliseconds: 200),
             child: Icon(
               icon,
-              key: ValueKey<bool>(
-                  _isFavorite), // Cập nhật trạng thái khi thay đổi
-              color: icon == Icons.favorite
-                  ? (_isFavorite ? Colors.red : Colors.grey)
-                  : Colors.grey,
+              color: Colors.grey,
             ),
           ),
           const SizedBox(width: 16),
@@ -234,77 +283,104 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
     );
   }
 
-  // Xây dựng một mục nhạc trong danh sách
+  //  danh sách nhạc yêu thích
   Widget _buildMusicItem(Map<String, dynamic> song) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 80.0,
-                height: 80.0,
-                decoration: BoxDecoration(
-                  color: Colors.white, // Màu nền trắng khi ảnh bị lỗi
-                  image: DecorationImage(
-                    image: NetworkImage(song['image'] ?? ''),
+      child: GestureDetector(
+        onTap: () {
+          // Truyền dữ liệu sang màn hình song-detail
+          Get.toNamed('/song-detail', arguments: {
+            'id': song['id'] ?? '',
+            'title': song['title'] ?? 'Chưa có tiêu đề',
+            'artist': song['artist'] ?? 'N/A',
+            'coverImageUrl': song['coverImageUrl'],
+            'fileUrl': song['fileUrl'] ?? '',
+            'isFavorite': song['isFavorite'] ?? false,
+          });
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 60.0,
+                  height: 60.0,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(song['corverImageUrl'] ??
+                          'https://picsum.photos/80/80'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Image.network(
+                    song['corverImageUrl'] ?? 'https://picsum.photos/80/80',
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.network(
+                          'https://picsum.photos/80/80'); // Ảnh mặc định
+                    },
                   ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    song['name'] ?? 'Tên bài hát',
-                    style: const TextStyle(fontSize: 15, color: Colors.white),
-                  ),
-                  Text(
-                    song['artist'] ?? 'Ca sĩ',
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          IconButton(
-            onPressed: _showBottomSheet,
-            icon: const Icon(
-              Icons.more_vert_sharp,
-              size: 24,
-              color: Colors.grey,
+                const SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      song['title'] ?? 'Tên bài hát',
+                      style: const TextStyle(fontSize: 15, color: Colors.white),
+                    ),
+                    Text(
+                      song['artist'] ?? 'Ca sĩ',
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ),
-        ],
+            IconButton(
+              onPressed: () => _showBottomSheet(song),
+              icon: const Icon(
+                Icons.more_vert_sharp,
+                size: 24,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  // Xây dựng thông tin bài hát
-  Widget _buildSongInfo() {
+  // thông tin bài hát trong showBottom
+  Widget _buildSongInfo(song) {
     return Row(
       children: [
         SizedBox(
           width: 50,
           height: 50,
           child: Image.network(
-            "https://ls1.in/avEjH",
+            song['coverImageUrl'] ??
+                'https://picsum.photos/80/80', // Ảnh mặc định
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Image.network(
+                  'https://picsum.photos/80/80'); // Ảnh mặc định
+            },
           ),
         ),
         const SizedBox(width: 8),
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Tên bài hát',
-              style: TextStyle(fontSize: 15, color: Colors.white),
+              song['title'],
+              style: const TextStyle(fontSize: 15, color: Colors.white),
             ),
             Text(
-              'Ca sĩ',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
+              song['artist'],
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
           ],
         ),

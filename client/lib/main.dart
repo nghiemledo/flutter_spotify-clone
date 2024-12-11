@@ -4,9 +4,11 @@ import 'package:client/screens/search/search.screen.dart';
 import 'package:client/screens/song/songdetail.screen.dart';
 import 'package:client/screens/user/favoritelist.screen.dart';
 import 'package:client/screens/user/profile.screen.dart';
+import 'package:client/widgets/lycrics.widget.dart';
 import 'package:client/widgets/navigation.widget.dart';
 import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const SpotifyApp());
@@ -17,18 +19,20 @@ class SpotifyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
-      routes: {
-        '/': (context) => const MainScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/search': (context) => const SearchScreen(),
-        '/library': (context) => const LibraryScreen(),
-        '/song-detail': (context) => const SongDetailScreen(),
-        '/user-profile': (context) => const ProfileScreen(),
-        '/favorite-list': (context) => const FavoriteListScreen(),
-      },
+      getPages: [
+        GetPage(name: '/', page: () => const MainScreen()),
+        GetPage(name: '/home', page: () => const HomeScreen()),
+        GetPage(name: '/search', page: () => const SearchScreen()),
+        GetPage(name: '/library', page: () => const LibraryScreen()),
+        GetPage(name: '/song-detail', page: () => const SongDetailScreen()),
+        GetPage(name: '/user-profile', page: () => const ProfileScreen()),
+        GetPage(name: '/favorite-list', page: () => const FavoriteListScreen()),
+        GetPage(name: '/lyrics', page: () => const Lyrics()),
+        GetPage(name: '/song-detail', page: () => const SongDetailScreen()),
+      ],
     );
   }
 }

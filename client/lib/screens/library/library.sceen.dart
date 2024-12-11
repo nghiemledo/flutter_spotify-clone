@@ -1,6 +1,7 @@
 import 'package:client/main.dart';
 import 'package:client/screens/playlist/playlist.create.screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -249,7 +250,7 @@ class _LibraryScreenState extends State<LibraryScreen>
                             "https://example.com/favorite_image.jpg", // Ảnh mục thư viện.
                         text: "Bài hát đã thích", // Tiêu đề mục.
                         onTap: () {
-                          Navigator.pushNamed(context, '/favorite-list');
+                          Get.toNamed('/favorite-list');
                         },
                       ),
                       _buildLibraryItem(
