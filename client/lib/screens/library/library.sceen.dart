@@ -15,7 +15,7 @@ class _LibraryScreenState extends State<LibraryScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller; // Điều khiển hoạt động của animation.
   late Animation<Offset>
-      _offsetAnimation; // Xác định hướng và chuyển động cho SlideTransition.
+      _offsetAnimation; // hướng và chuyển động
   late OverlayEntry _overlayEntry; // Tạo lớp overlay để hiển thị menu trượt.
 
   @override
@@ -66,7 +66,7 @@ class _LibraryScreenState extends State<LibraryScreen>
           child: Material(
             color: Colors.transparent,
             child: SlideTransition(
-              position: _offsetAnimation, // Gắn animation đã khởi tạo.
+              position: _offsetAnimation,
               child: Container(
                 color: const Color.fromARGB(
                     255, 33, 33, 33), // Màu nền menu trượt.
@@ -92,8 +92,7 @@ class _LibraryScreenState extends State<LibraryScreen>
                               Future.delayed(const Duration(milliseconds: 50),
                                   () {
                                 _hideSlideMenu();
-                                // ignore: use_build_context_synchronously
-                                Navigator.pushNamed(context, '/user-profile');
+                                Get.toNamed('/user-profile');
                               });
                             },
                             child: const Column(
@@ -129,7 +128,11 @@ class _LibraryScreenState extends State<LibraryScreen>
                       child: Column(children: [
                         GestureDetector(
                           onTap: () {
-                            Get.toNamed("sign-up");
+                            Future.delayed(const Duration(milliseconds: 50),
+                                () {
+                              _hideSlideMenu();
+                              Get.toNamed('/sign-up');
+                            });
                           }, // Mở menu khi nhấn.
                           child: const Row(
                             children: [

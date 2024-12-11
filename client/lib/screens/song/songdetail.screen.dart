@@ -4,14 +4,15 @@ import 'package:client/widgets/lycrics.widget.dart';
 import 'package:get/get.dart';
 
 class SongDetailScreen extends StatelessWidget {
-  const SongDetailScreen({super.key});
+  SongDetailScreen({super.key});
+  final MusicController musicController = Get.put(MusicController());
 
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> song = Get.arguments;
-    final MusicController musicController = Get.put(MusicController());
     musicController.playSong(song['url']);
 
+    musicController.fetchFavoriteStatus();
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -99,30 +100,44 @@ class SongDetailScreen extends StatelessWidget {
                               style: const TextStyle(
                                   color: Colors.white70, fontSize: 18)),
                         ]),
-                    const Icon(Icons.add_circle_outline,
-                        color: Colors.white, size: 30)
+                    IconButton(
+                        onPressed: () {
+                          musicController.isFavorite.value =
+                              !musicController.isFavorite.value;
+                        },
+                        icon: Icon(
+                            musicController.isFavorite.value == true
+                                ? Icons.add_circle_outline
+                                : Icons.check_circle,
+                            color: Colors.white,
+                            size: 30))
                   ],
                 );
               }),
               // Thanh chạy nhạc
-              Slider(
-                value: 71,
-                min: 0,
-                max: 283,
-                activeColor: Colors.white,
-                inactiveColor: const Color(0xFF272727),
-                onChanged: (value) {},
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Obx(() {
+                  return Slider(
+                    value: musicController.currentPosition.value.inSeconds
+                        .toDouble(),
+                    min: 0,
+                    max: musicController.duration.value.inSeconds.toDouble(),
+                    activeColor: Colors.blueAccent, 
+                    inactiveColor: const Color.fromARGB(
+                        255, 255, 255, 255), 
+                    onChanged: (value) {
+                      musicController.seekTo(Duration(seconds: value.toInt()));
+                    },
+                  );
+                }),
               ),
-              // Thời gian nhạc
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("1:00",
-                      style: TextStyle(color: Colors.white70, fontSize: 12)),
-                  Text("4:43",
-                      style: TextStyle(color: Colors.white70, fontSize: 12)),
-                ],
-              ),
+              Obx(() {
+                return Text(
+                  '${musicController.formatDuration(musicController.currentPosition.value)} / ${musicController.formatDuration(musicController.duration.value)}',
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                );
+              }),
               const SizedBox(height: 20),
               // Thanh công cụ nhạc
               Row(
