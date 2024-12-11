@@ -16,6 +16,7 @@ class SongWidget extends StatelessWidget {
         Get.toNamed(
           '/song-detail',
           arguments: {
+            'id': controller.id.value,
             'cover_image': controller.coverImage.value,
             'title': controller.title.value,
             'artist': controller.artist.value,
@@ -27,7 +28,6 @@ class SongWidget extends StatelessWidget {
           },
         );
       },
-      
       child: Container(
         color: Colors.black,
         child: Container(

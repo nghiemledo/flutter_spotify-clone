@@ -188,6 +188,7 @@ class FavoriteListScreen extends StatelessWidget {
     final MusicController musicController = Get.find();
 
     // Cập nhật dữ liệu vào MusicController
+    musicController.id.value = song['id'] ?? '';
     musicController.coverImage.value = song['cover_image'] ?? '';
     musicController.title.value = song['title'] ?? 'Chưa có tiêu đề';
     musicController.artist.value = song['artist'] ?? 'N/A';

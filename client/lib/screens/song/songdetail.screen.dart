@@ -3,16 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:client/widgets/lycrics.widget.dart';
 import 'package:get/get.dart';
 
-class SongDetailScreen extends StatelessWidget {
-  SongDetailScreen({super.key});
+class SongDetailScreen extends StatefulWidget {
+  const SongDetailScreen({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _SongDetailScreenState createState() => _SongDetailScreenState();
+}
+
+class _SongDetailScreenState extends State<SongDetailScreen> {
   final MusicController musicController = Get.put(MusicController());
+
+  @override
+  void initState() {
+    super.initState();
+    final Map<String, dynamic> song = Get.arguments;
+                    musicController.playSong(song['id'], song['url']);
+    musicController.getFavoriteStatus(song['id'].toString());
+  }
 
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> song = Get.arguments;
-    musicController.playSong(song['url']);
-
-    musicController.fetchFavoriteStatus();
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -101,16 +113,19 @@ class SongDetailScreen extends StatelessWidget {
                                   color: Colors.white70, fontSize: 18)),
                         ]),
                     IconButton(
-                        onPressed: () {
-                          musicController.isFavorite.value =
-                              !musicController.isFavorite.value;
-                        },
-                        icon: Icon(
-                            musicController.isFavorite.value == true
-                                ? Icons.add_circle_outline
-                                : Icons.check_circle,
-                            color: Colors.white,
-                            size: 30))
+                      icon: Icon(
+                        musicController.isFavorite.value
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: musicController.isFavorite.value
+                            ? Colors.red
+                            : Colors.grey,
+                      ),
+                      onPressed: () async {
+                        await musicController
+                            .updateFavoriteStatus(song['id'].toString());
+                      },
+                    ),
                   ],
                 );
               }),
@@ -123,9 +138,8 @@ class SongDetailScreen extends StatelessWidget {
                         .toDouble(),
                     min: 0,
                     max: musicController.duration.value.inSeconds.toDouble(),
-                    activeColor: Colors.blueAccent, 
-                    inactiveColor: const Color.fromARGB(
-                        255, 255, 255, 255), 
+                    activeColor: Colors.blueAccent,
+                    inactiveColor: const Color.fromARGB(255, 255, 255, 255),
                     onChanged: (value) {
                       musicController.seekTo(Duration(seconds: value.toInt()));
                     },
