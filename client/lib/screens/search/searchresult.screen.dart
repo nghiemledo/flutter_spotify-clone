@@ -9,8 +9,9 @@ class SearchResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+        backgroundColor: Colors.black,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.white24,
           elevation: 0,
           title: Row(
@@ -21,12 +22,18 @@ class SearchResultScreen extends StatelessWidget {
                   Navigator.pop(context);
                 },
               ),
-              const SizedBox(width: 10,),
+              const SizedBox(
+                width: 10,
+              ),
               Expanded(
                 child: TextField(
                   controller: _controller,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
+                    hintText: 'Bạn muốn nghe gì?',
+                          hintStyle: TextStyle(
+                              color: Colors.white54,
+                              ),
                     border: InputBorder.none,
                   ),
                 ),
@@ -40,7 +47,6 @@ class SearchResultScreen extends StatelessWidget {
             ],
           ),
         ),
-
         body: Padding(
           padding: const EdgeInsets.all(10.0),
           child: ListView.builder(
@@ -50,12 +56,12 @@ class SearchResultScreen extends StatelessWidget {
               return PlayListScreen(
                 title: "Lời Tạm Biệt Chưa Nói",
                 author: "GREY D, Orange, Kai Đinh",
-                imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgFLUCy0cckz2AUEnf6hFfqK3U1vqSjMuK-Q&s",
+                imageUrl:
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgFLUCy0cckz2AUEnf6hFfqK3U1vqSjMuK-Q&s",
                 icon: Icons.more_vert,
               );
             },
           ),
-        )
-    );
+        ));
   }
 }

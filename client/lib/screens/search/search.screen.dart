@@ -1,3 +1,4 @@
+import 'package:client/screens/search/searchresult.screen.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -22,7 +23,7 @@ class SearchScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView( 
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,22 +35,34 @@ class SearchScreen extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Row(
-                children: [
-                  Icon(Icons.search, color: Colors.black54),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      style: TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
-                        hintText: 'Bạn muốn nghe gì?',
-                        hintStyle: TextStyle(
-                            color: Colors.black54, fontWeight: FontWeight.bold),
-                        border: InputBorder.none,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchResultScreen()),
+                  );
+                },
+                child: const Row(
+                  children: [
+                    Icon(Icons.search, color: Colors.black54),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: TextField(
+                        readOnly: true,
+                        style: TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          hintText: 'Bạn muốn nghe gì?',
+                          hintStyle: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold
+                              ),
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 24),
@@ -59,7 +72,8 @@ class SearchScreen extends StatelessWidget {
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.bold
+                  ),
             ),
             const SizedBox(height: 16),
 
@@ -91,6 +105,7 @@ class SearchScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
+            // Browse All Section
             const Text(
               'Duyệt tìm tất cả',
               style: TextStyle(
@@ -100,20 +115,20 @@ class SearchScreen extends StatelessWidget {
                   ),
             ),
             const SizedBox(height: 16),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 2 / 1,
-                children: const [
-                  // All Category Cards
-                  CategoryCard(color: Colors.blue, label: "Nhạc", imageUrl: ""),
-                  CategoryCard(color: Colors.red, label: "Podcast", imageUrl: ""),
-                  CategoryCard(color: Colors.green, label: "Tâm trạng", imageUrl: ""),
-                  CategoryCard(color: Colors.orange, label: "Ngủ", imageUrl: ""),
-                ],
-              ),
+            // Grid View for Categories
+            GridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: 2 / 1,
+              shrinkWrap: true, 
+              physics: NeverScrollableScrollPhysics(), 
+              children: const [
+                CategoryCard(color: Colors.blue, label: "Nhạc", imageUrl: ""),
+                CategoryCard(color: Colors.red, label: "Podcast", imageUrl: ""),
+                CategoryCard(color: Colors.green, label: "Tâm trạng", imageUrl: ""),
+                CategoryCard(color: Colors.orange, label: "Ngủ", imageUrl: ""),
+              ],
             ),
           ],
         ),
@@ -122,14 +137,17 @@ class SearchScreen extends StatelessWidget {
   }
 }
 
-
-//GenreCard
+// Widget GenreCard
 class GenreCard extends StatelessWidget {
   final String label;
   final Color color;
   final String imageUrl;
 
-  const GenreCard({super.key, required this.label, required this.color, required this.imageUrl});
+  const GenreCard(
+      {super.key,
+      required this.label,
+      required this.color,
+      required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -161,8 +179,7 @@ class GenreCard extends StatelessWidget {
   }
 }
 
-
-//CategoryCard
+// Widget CategoryCard
 class CategoryCard extends StatelessWidget {
   final Color color;
   final String label;
