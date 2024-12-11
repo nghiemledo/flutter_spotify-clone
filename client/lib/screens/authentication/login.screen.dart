@@ -1,8 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  final emailRegex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+  final passwordRegex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$';
+
+  bool isValidEmail(String email) {
+    return RegExp(emailRegex).hasMatch(email);
+  }
+
+  bool isValidPassword(String password) {
+    return RegExp(passwordRegex).hasMatch(password);
+  }
+
+  Future<void> login() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    if (!isValidEmail(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invalid email format')),
+      );
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+                'Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 special character')),
+      );
+      return;
+    }
+
+    final response = await http.post(
+      Uri.parse('http://localhost:3000/api/v1/auth/login'),
+      body: json.encode({'email': email, 'password': password}),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final accessToken = data['accessToken'];
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('access_token', accessToken);
+
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      final errorMessage =
+          json.decode(response.body)['message'] ?? 'Login failed';
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(errorMessage)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +116,14 @@ class LoginScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Email or username",
+                  "Email",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20),
                 ),
                 TextField(
+                  controller: _emailController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     filled: true,
@@ -76,13 +141,14 @@ class LoginScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Passwords",
+                  "Password",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20),
                 ),
                 TextField(
+                  controller: _passwordController,
                   obscureText: true,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
@@ -100,7 +166,7 @@ class LoginScreen extends StatelessWidget {
             ),
             const SizedBox(height: 50),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: login,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.grey[800],
                 padding: const EdgeInsets.symmetric(

@@ -9,8 +9,8 @@ const authRouter = Router();
 // const authService = new AuthService(authRepository);
 const authController = new AuthController();
 
-authRouter.post("/login", authController.userLogin);
-authRouter.post("/register", authController.userRegister);
-authRouter.get("/current_user", authenticateToken, authController.getCurrentUser);
+authRouter.post("/login", authController.userLogin.bind(authController));
+authRouter.post("/register", authController.userRegister.bind(authController));
+authRouter.get("/current_user", authenticateToken, authController.getCurrentUser.bind(authController));
 
 export default authRouter;

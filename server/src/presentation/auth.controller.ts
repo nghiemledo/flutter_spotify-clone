@@ -23,6 +23,7 @@ class AuthController {
             response.status(201).json({
                 status: 'Success',
                 message: 'User registered successfully',
+                data: newUser
             })
         } catch (error: any) {
             response.json({message: error.message || "Error occurred when register user"})
@@ -55,7 +56,6 @@ class AuthController {
                     accessToken,
                     refreshToken,
                     user: {
-                        _id: user._id,
                         username: user.username,
                         email: user.email,
                     }
