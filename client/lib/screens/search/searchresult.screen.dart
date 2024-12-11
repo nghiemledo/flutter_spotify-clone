@@ -1,4 +1,4 @@
-import 'package:client/screens/playlist/playlist.screen.dart';
+import 'package:client/screens/playlist/playlist.optional.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultScreen extends StatelessWidget {
@@ -31,9 +31,9 @@ class SearchResultScreen extends StatelessWidget {
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
                     hintText: 'Bạn muốn nghe gì?',
-                          hintStyle: TextStyle(
-                              color: Colors.white54,
-                              ),
+                    hintStyle: TextStyle(
+                      color: Colors.white54,
+                    ),
                     border: InputBorder.none,
                   ),
                 ),
@@ -53,15 +53,15 @@ class SearchResultScreen extends StatelessWidget {
             shrinkWrap: true,
             itemCount: 2,
             itemBuilder: (context, index) {
-              return PlayListScreen(
+              return PlayListItemSearch(
                 title: "Lời Tạm Biệt Chưa Nói",
                 author: "GREY D, Orange, Kai Đinh",
                 imageUrl:
                     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgFLUCy0cckz2AUEnf6hFfqK3U1vqSjMuK-Q&s",
-                icon: Icons.more_vert,
               );
             },
           ),
         ));
   }
 }
+

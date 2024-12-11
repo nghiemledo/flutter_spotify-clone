@@ -1,6 +1,6 @@
 import 'package:client/screens/playlist/playlist.addsong.screen.dart';
 import 'package:client/screens/playlist/playlist.edit.screen.dart';
-import 'package:client/screens/playlist/playlist.screen.dart';
+import 'package:client/screens/playlist/playlist.optional.dart';
 import 'package:flutter/material.dart';
 
 class PlayListMineScreen extends StatelessWidget {
@@ -187,11 +187,10 @@ class PlayListMineScreen extends StatelessWidget {
                   itemCount: 2,
                   itemBuilder: (context, index) {
                     // Sử dụng PlaylistItem cho bài hát có trong PlayList
-                    return PlayListScreen(  
+                    return PlayListItemSearch(  
                       title: "Lời Tạm Biệt Chưa Nói",
                       author: "GREY D, Orange, Kai Đinh",
                       imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgFLUCy0cckz2AUEnf6hFfqK3U1vqSjMuK-Q&s",
-                      icon: Icons.add_circle_outline,
                     );
                   },
                 ),
@@ -217,11 +216,10 @@ class PlayListMineScreen extends StatelessWidget {
                   itemCount: 2,
                   itemBuilder: (context, index) {
                     // Sử dụng PlaylistItem cho bài hát gợi ý
-                    return PlayListScreen(  
+                    return PlayListItem(  
                       title: "Lời Tạm Biệt Chưa Nói",
                       author: "GREY D, Orange, Kai Đinh",
                       imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgFLUCy0cckz2AUEnf6hFfqK3U1vqSjMuK-Q&s",
-                      icon: Icons.add_circle_outline,
                     );
                   },
                 ),
