@@ -9,6 +9,7 @@ import artistRouter from "./src/routes/artist.routes";
 import genreRouter from "./src/routes/genre.routes";
 import songRouter from "./src/routes/song.routes";
 import playlistRouter from "./src/routes/playlist.routes";
+import albumRouter from "./src/routes/album.routes";
 
 const app = express();
 dotenv.config();
@@ -23,6 +24,7 @@ app.use("/api/v1/artist", artistRouter);
 app.use("/api/v1/genre", genreRouter);
 app.use("/api/v1/song", songRouter);
 app.use("/api/v1/playlist", playlistRouter);
+app.use("/api/v1/album", albumRouter);
 
 const connectDB = async () => {
   try {
