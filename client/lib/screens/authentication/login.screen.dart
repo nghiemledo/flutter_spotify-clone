@@ -32,7 +32,7 @@ class LoginScreen extends StatelessWidget {
                 Expanded(
                   flex: 20,
                   child: GestureDetector(
-                    onTap: () => {Get.toNamed('home')},
+                    onTap: () => {Get.back()},
                     child: const Text(
                       "Login",
                       textAlign: TextAlign.center,
