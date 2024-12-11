@@ -8,18 +8,19 @@ class PlaylistService {
         return this.playlistRepository.findAll();
     }
     
-    async createPlaylist(playlist: PlaylistVM) {
+    async createPlaylist(playlist: PlaylistVM): Promise<PlaylistVM> {
         return this.playlistRepository.create(playlist);
     }
 
-    async getPlaylistById(id: string) {
+    async getPlaylistById(id: string): Promise<PlaylistVM | null> {
         return this.playlistRepository.findById(id);
     }
 
-    async updatePlaylist(id: string, playlist: PlaylistVM) {
+    async updatePlaylist(id: string, playlist: PlaylistVM): Promise<PlaylistVM | null> {
         return this.playlistRepository.update(id, playlist);
     }
-    async deletePlaylist(id: string) {
+
+    async deletePlaylist(id: string): Promise<boolean> {
         return this.playlistRepository.delete(id);
     }
 }
