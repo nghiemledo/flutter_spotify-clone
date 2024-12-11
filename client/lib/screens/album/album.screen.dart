@@ -1,4 +1,8 @@
+import 'package:client/main.dart';
+import 'package:client/widgets/navigation.widget.dart';
+import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AlbumScreen extends StatelessWidget {
   const AlbumScreen({super.key});
@@ -14,6 +18,26 @@ class AlbumScreen extends StatelessWidget {
             _buildSongList(),
             const SizedBox(height: 30),
             _buildOtherAlbumsSection(),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        color: Colors.black,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SongWidget(),
+            NavigationWidget(
+              currentIndex: 2,
+              onTabSelected: (index) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainScreen(initialPage: index),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -39,7 +63,9 @@ class AlbumScreen extends StatelessWidget {
               children: [
                 IconButton(
                   icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.back();
+                  },
                 ),
                 const Text(
                   'Album',
@@ -53,7 +79,8 @@ class AlbumScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.6),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(16)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,7 +138,7 @@ class AlbumScreen extends StatelessWidget {
   Widget _buildSongList() {
     final songs = List.generate(
       4,
-          (index) => _buildSongItem(
+      (index) => _buildSongItem(
         index + 1,
         'Chúng Ta Không Thuộc Về Nhau',
         'Sơn Tùng M-TP',
@@ -124,7 +151,8 @@ class AlbumScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSongItem(int index, String title, String artist, String duration) {
+  Widget _buildSongItem(
+      int index, String title, String artist, String duration) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(

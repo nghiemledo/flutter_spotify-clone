@@ -133,7 +133,7 @@ class PlayListMineScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => PlaylistEditScreen()),
+                              MaterialPageRoute(builder: (context) => const PlaylistEditScreen()),
                             );
                           },
                         ),
@@ -176,7 +176,7 @@ class PlayListMineScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddSongScreen()),
+                      MaterialPageRoute(builder: (context) => const AddSongScreen()),
                     );
                   },
                 ),
@@ -187,7 +187,7 @@ class PlayListMineScreen extends StatelessWidget {
                   itemCount: 2,
                   itemBuilder: (context, index) {
                     // Sử dụng PlaylistItem cho bài hát có trong PlayList
-                    return PlayListScreen(  
+                    return const PlayListScreen(  
                       title: "Lời Tạm Biệt Chưa Nói",
                       author: "GREY D, Orange, Kai Đinh",
                       imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgFLUCy0cckz2AUEnf6hFfqK3U1vqSjMuK-Q&s",
@@ -217,7 +217,7 @@ class PlayListMineScreen extends StatelessWidget {
                   itemCount: 2,
                   itemBuilder: (context, index) {
                     // Sử dụng PlaylistItem cho bài hát gợi ý
-                    return PlayListScreen(  
+                    return const PlayListScreen(  
                       title: "Lời Tạm Biệt Chưa Nói",
                       author: "GREY D, Orange, Kai Đinh",
                       imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgFLUCy0cckz2AUEnf6hFfqK3U1vqSjMuK-Q&s",

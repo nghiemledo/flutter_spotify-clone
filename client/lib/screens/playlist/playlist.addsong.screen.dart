@@ -86,7 +86,7 @@ class AddSongScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: 2,
                 itemBuilder: (context, index) {
-                  return PlayListScreen(  // Sử dụng PlaylistItem
+                  return const PlayListScreen(  // Sử dụng PlaylistItem
                     title: "Lời Tạm Biệt Chưa Nói",
                     author: "GREY D, Orange, Kai Đinh",
                     imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgFLUCy0cckz2AUEnf6hFfqK3U1vqSjMuK-Q&s",

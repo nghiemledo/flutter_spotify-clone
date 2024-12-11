@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
           // Filters với khả năng cuộn ngang
-          SingleChildScrollView(
+          const SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
@@ -37,13 +37,13 @@ class HomeScreen extends StatelessWidget {
                   radius: 20,
                   backgroundImage: AssetImage('assets/images/avatar.jpg'),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 FilterChip(label: "All", isActive: true),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 FilterChip(label: "Wrapped"),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 FilterChip(label: "Music"),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 FilterChip(label: "Podcasts"),
               ],
             ),
@@ -153,7 +153,7 @@ class HomeScreen extends StatelessWidget {
             height: 150,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: [
+              children: const [
                 MixCard(
                   title: "Quốc Thiên Mix",
                   subtitle: "Bằng Kiều, Đình Tiến Đạt",
@@ -178,9 +178,9 @@ class HomeScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   SectionTitle(title: "Recents"),
                   Text("Show all", style: TextStyle(color: Colors.grey)),
                 ],
@@ -190,7 +190,7 @@ class HomeScreen extends StatelessWidget {
                 height: 120,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  children: [
+                  children: const [
                     RecentItem(
                       title: "G-DRAGON",
                       subtitle: "Artist",
@@ -231,7 +231,7 @@ class HomeScreen extends StatelessWidget {
             height: 150,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: [
+              children: const [
                 StationCard(
                   title: "Bạn Đời",
                   artist: "Karik, GDucky",
@@ -259,7 +259,7 @@ class HomeScreen extends StatelessWidget {
             height: 150,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: [
+              children: const [
                 JumpBackCard(
                   title: "Voi bạn đơn",
                   subtitle: "Playlist",
@@ -301,7 +301,7 @@ class GridItem extends StatelessWidget {
   final String subtitle;
   final String imageUrl;
 
-  const GridItem({
+  const GridItem({super.key, 
     required this.title,
     required this.subtitle,
     required this.imageUrl,
@@ -363,7 +363,7 @@ class GridItem extends StatelessWidget {
 class FilterChip extends StatelessWidget {
   final String label;
   final bool isActive;
-  const FilterChip({required this.label, this.isActive = false});
+  const FilterChip({super.key, required this.label, this.isActive = false});
 
   @override
   Widget build(BuildContext context) {
@@ -383,7 +383,7 @@ class FilterChip extends StatelessWidget {
 
 class SectionTitle extends StatelessWidget {
   final String title;
-  const SectionTitle({required this.title});
+  const SectionTitle({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -400,7 +400,7 @@ class MixCard extends StatelessWidget {
   final String subtitle;
   final String imageUrl;
   const MixCard(
-      {required this.title, required this.subtitle, required this.imageUrl});
+      {super.key, required this.title, required this.subtitle, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -436,7 +436,7 @@ class RecentItem extends StatelessWidget {
   final String imageUrl;
   final bool hasBadge;
 
-  const RecentItem({
+  const RecentItem({super.key, 
     required this.title,
     required this.subtitle,
     required this.imageUrl,
@@ -502,7 +502,7 @@ class StationCard extends StatelessWidget {
   final String artist;
   final String imageUrl;
   const StationCard(
-      {required this.title, required this.artist, required this.imageUrl});
+      {super.key, required this.title, required this.artist, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -535,7 +535,7 @@ class JumpBackCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String imageUrl;
-  const JumpBackCard({
+  const JumpBackCard({super.key, 
     required this.title,
     required this.subtitle,
     required this.imageUrl,

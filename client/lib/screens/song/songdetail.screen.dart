@@ -8,7 +8,10 @@ class SongDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> song = Get.arguments;
     final MusicController musicController = Get.put(MusicController());
+    musicController.playSong(song['url']);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -61,7 +64,7 @@ class SongDetailScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20), // Bo góc
                 ),
                 child: Image.network(
-                  (musicController.coverImageUrl.value),
+                  (musicController.coverImage.value),
                   fit: BoxFit.cover,
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) {
@@ -87,12 +90,12 @@ class SongDetailScreen extends StatelessWidget {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(musicController.songName.value,
+                          Text(musicController.title.value,
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold)),
-                          Text(musicController.artistName.value,
+                          Text(musicController.artist.value,
                               style: const TextStyle(
                                   color: Colors.white70, fontSize: 18)),
                         ]),
@@ -114,7 +117,7 @@ class SongDetailScreen extends StatelessWidget {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("1:11",
+                  Text("1:00",
                       style: TextStyle(color: Colors.white70, fontSize: 12)),
                   Text("4:43",
                       style: TextStyle(color: Colors.white70, fontSize: 12)),
@@ -206,10 +209,11 @@ class SongDetailScreen extends StatelessWidget {
                             fontSize: 18,
                             fontWeight: FontWeight.bold)),
                     const SizedBox(height: 20),
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        "Biết em thương người ấy đã rất nhiều ",
-                        style: TextStyle(color: Colors.white, fontSize: 25),
+                        musicController.lyrics.value,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 25),
                       ),
                     ),
                     ElevatedButton(
