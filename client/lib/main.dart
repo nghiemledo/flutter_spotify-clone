@@ -1,3 +1,5 @@
+import 'package:client/screens/album/album.screen.dart';
+import 'package:client/screens/authentication/authentication.screen.dart';
 import 'package:client/screens/home/home.screen.dart';
 import 'package:client/screens/library/library.sceen.dart';
 import 'package:client/screens/search/search.screen.dart';
@@ -6,11 +8,13 @@ import 'package:client/screens/user/favoritelist.screen.dart';
 import 'package:client/screens/user/profile.screen.dart';
 import 'package:client/widgets/lycrics.widget.dart';
 import 'package:client/widgets/navigation.widget.dart';
+import 'package:client/widgets/playmusic.dart';
 import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
+  Get.put(MusicController());
   runApp(const SpotifyApp());
 }
 
@@ -32,6 +36,8 @@ class SpotifyApp extends StatelessWidget {
         GetPage(name: '/favorite-list', page: () => const FavoriteListScreen()),
         GetPage(name: '/lyrics', page: () => const Lyrics()),
         GetPage(name: '/song-detail', page: () => const SongDetailScreen()),
+        GetPage(name: '/album', page: () => const AlbumScreen()),
+        GetPage(name: '/sign-up', page: () => const SignUpScreen()),
       ],
     );
   }

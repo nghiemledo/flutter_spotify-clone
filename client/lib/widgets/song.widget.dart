@@ -8,7 +8,7 @@ class SongWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MusicController controller =
-        Get.put(MusicController  ()); // Lấy controller đã có
+        Get.put(MusicController()); // Lấy controller đã có
 
     return GestureDetector(
       onTap: () {
@@ -16,9 +16,13 @@ class SongWidget extends StatelessWidget {
         Get.toNamed(
           '/song-detail',
           arguments: {
-            'title': controller.songName.value,
-            'artist': controller.artistName.value,
-            'fileUrl': controller.fileUrl.value,
+            'cover_image': controller.coverImage.value,
+            'title': controller.title.value,
+            'artist': controller.artist.value,
+            'url': controller.url.value,
+            'album': controller.album.value,
+            'genre': controller.genre.value,
+            'lyrics': controller.lyrics.value,
           },
         );
       },
@@ -43,12 +47,12 @@ class SongWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Obx(() => Text(
-                              "Đang phát: ${controller.songName.value}",
+                              "Đang phát: ${controller.title.value}",
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 14),
                             )),
                         Obx(() => Text(
-                              controller.artistName.value,
+                              controller.artist.value,
                               style: const TextStyle(
                                   color: Colors.grey, fontSize: 12),
                             )),

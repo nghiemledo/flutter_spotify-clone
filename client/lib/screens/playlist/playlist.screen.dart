@@ -6,7 +6,7 @@ class PlayListScreen extends StatelessWidget {
   final String imageUrl;
   final IconData icon;
 
-  PlayListScreen({
+  const PlayListScreen({super.key, 
     required this.title,
     required this.author,
     required this.imageUrl,

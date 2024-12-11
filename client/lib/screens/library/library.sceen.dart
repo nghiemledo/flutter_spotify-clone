@@ -128,7 +128,9 @@ class _LibraryScreenState extends State<LibraryScreen>
                       padding: const EdgeInsets.all(16),
                       child: Column(children: [
                         GestureDetector(
-                          onTap: () {}, // Mở menu khi nhấn.
+                          onTap: () {
+                            Get.toNamed("sign-up");
+                          }, // Mở menu khi nhấn.
                           child: const Row(
                             children: [
                               Icon(Icons.add, color: Colors.white, size: 36),
@@ -247,19 +249,23 @@ class _LibraryScreenState extends State<LibraryScreen>
                     children: [
                       _buildLibraryItem(
                         imageUrl:
-                            "https://example.com/favorite_image.jpg", // Ảnh mục thư viện.
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQI6f-ExylkpwX5V7FbtITtoiJyWk-8-jfKB-O1BBz_2fPEOg6a_ywGHfZaIvFdlDvCNfY&usqp=CAU", // Ảnh mục thư viện.
                         text: "Bài hát đã thích", // Tiêu đề mục.
                         onTap: () {
                           Get.toNamed('/favorite-list');
                         },
                       ),
                       _buildLibraryItem(
-                        imageUrl: "https://example.com/album_image.jpg",
+                        imageUrl:
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPChQuJDe64C1DKFYOHxobWZjX9PPQtWWX5LYXvgtto9_M2NL4bXWlNnQqsHzxvmjHX0c&usqp=CAU",
                         text: "Album",
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed('/album');
+                        },
                       ),
                       _buildLibraryItem(
-                        imageUrl: "https://example.com/playlist_image.jpg",
+                        imageUrl:
+                            "https://cdn-icons-png.flaticon.com/512/636/636224.png",
                         text: "Playlist của tôi",
                         onTap: () {},
                       ),
@@ -281,20 +287,21 @@ class _LibraryScreenState extends State<LibraryScreen>
     required VoidCallback onTap,
   }) {
     return GestureDetector(
-      onTap: onTap, // Xử lý sự kiện khi người dùng nhấn vào mục.
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(
           children: [
             CircleAvatar(
-              radius: 32,
+              radius: 36,
               backgroundImage: NetworkImage(imageUrl),
             ),
 
             const SizedBox(width: 16),
             Text(text,
-                style:
-                    const TextStyle(color: Colors.white)), // Hiển thị tên mục.
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold)), // Hiển thị tên mục.
           ],
         ),
       ),
