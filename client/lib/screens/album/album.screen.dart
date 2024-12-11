@@ -1,21 +1,27 @@
+import 'package:client/controller/album.controller.dart';
 import 'package:client/main.dart';
 import 'package:client/widgets/navigation.widget.dart';
+import 'package:client/controller/playmusic.controller.dart';
 import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class AlbumScreen extends StatelessWidget {
-  const AlbumScreen({super.key});
+  MusicController musicController = Get.put(MusicController());
+  AlbumScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AlbumController albumController = Get.find(); // Lấy albumController
+
     return Scaffold(
       backgroundColor: Colors.grey[800],
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHeader(context),
-            _buildSongList(),
+            _buildHeader(context, albumController),
+            _buildSongList(albumController),
             const SizedBox(height: 30),
             _buildOtherAlbumsSection(),
           ],
@@ -44,14 +50,13 @@ class AlbumScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, AlbumController albumController) {
     return Container(
       height: 300,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(
-            'https://images.pexels.com/photos/5941318/pexels-photo-5941318.jpeg',
-          ),
+          image: NetworkImage(albumController.album['cover_image'] ??
+              'https://via.placeholder.com/150'),
           fit: BoxFit.cover,
         ),
       ),
@@ -86,18 +91,18 @@ class AlbumScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Sky Tour (Original Motion Picture Soundtrack)',
-                  style: TextStyle(
+                Text(
+                  albumController.album['name'] ?? 'Album Name',
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Sơn Tùng M-TP • 2020 • 4 bài hát, 20 phút 6 giây',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                Text(
+                  '${albumController.album['artist'] ?? 'Artist'} • 2020 • 4 bài hát',
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),
                 const SizedBox(height: 16),
                 Row(
@@ -135,67 +140,66 @@ class AlbumScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSongList() {
-    final songs = List.generate(
-      4,
-      (index) => _buildSongItem(
-        index + 1,
-        'Chúng Ta Không Thuộc Về Nhau',
-        'Sơn Tùng M-TP',
-        '5:09',
-      ),
-    );
+  // Thay đổi: Truyền albumController trực tiếp, không phải Map<String, dynamic> nữa
+  Widget _buildSongList(AlbumController albumController) {
+    List<dynamic> songs = albumController.album['songs'] ??
+        []; // Lấy danh sách bài hát từ albumController
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(children: songs),
+      child: Column(
+        children: songs.map((song) {
+          return _buildSongItem(
+              song); // Gọi hàm _buildSongItem để tạo item cho mỗi bài hát
+        }).toList(),
+      ),
     );
   }
 
-  Widget _buildSongItem(
-      int index, String title, String artist, String duration) {
+  // Sửa lại hàm này để phù hợp với dữ liệu bài hát
+  Widget _buildSongItem(Map<String, dynamic> song) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Text(
-            index.toString(),
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+      child: GestureDetector(
+        onTap: () {
+          navigateToSongDetail(song);
+        },
+        child: Row(
+          children: [
+            Image.network(song['cover_image'], width: 50, height: 50),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    song['title'],
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Text(
-                  artist,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.white70,
+                  Text(
+                    song['artist'],
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Text(
-            duration,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.white70,
+            IconButton(
+              icon: const Icon(Icons.more_vert_sharp, color: Colors.white),
+              onPressed: () {
+                // Phát nhạc từ URL của bài hát
+                print('Đang phát: ${song['id']}');
+                musicController.playSong(song['id'], song['url']);
+              },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -234,4 +238,23 @@ class AlbumScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+// Chuyển đến màn hình chi tiết bài hát
+void navigateToSongDetail(Map<String, dynamic> song) {
+  final MusicController musicController = Get.find();
+
+  // Cập nhật dữ liệu vào MusicController
+  musicController.id.value = song['id'] ?? '';
+  musicController.coverImage.value = song['cover_image'] ?? '';
+  musicController.title.value = song['title'] ?? 'Chưa có tiêu đề';
+  musicController.artist.value = song['artist'] ?? 'N/A';
+  musicController.url.value = song['url'] ?? '';
+  musicController.album.value = song['album'] ?? '';
+  musicController.genre.value = song['genre'] ?? '';
+  musicController.lyrics.value = song['lyrics'] ?? '';
+
+  musicController.togglePlayPause();
+  // Chuyển hướng đến màn hình chi tiết
+  Get.toNamed('/song-detail', arguments: song);
 }

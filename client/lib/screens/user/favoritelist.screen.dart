@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:client/main.dart';
 import 'package:client/widgets/navigation.widget.dart';
-import 'package:client/widgets/playmusic.dart';
+import 'package:client/controller/playmusic.controller.dart';
 import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

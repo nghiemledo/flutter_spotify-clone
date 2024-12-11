@@ -1,26 +1,22 @@
-import 'package:client/widgets/playmusic.dart';
+import 'package:client/controller/album.controller.dart';
+import 'package:client/screens/album/album.screen.dart';
+import 'package:client/controller/playmusic.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreen extends StatelessWidget {
   final MusicController musicController = Get.put(MusicController());
+  final AlbumController albumController = Get.put(AlbumController());
+  // final Api api = Get.put(Api());
 
-  @override
-  void initState() {
-    super.initState();
-    musicController.fetchSongs();
-  }
+  HomeScreen({super.key});
+  final List<Map<String, dynamic>> playlist = [];
 
   @override
   Widget build(BuildContext context) {
+    musicController.fetchSongs();
+    musicController.fetchAlbums();
+    // api.fetchAlbums();
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -127,29 +123,33 @@ class _HomeScreenState extends State<HomeScreen> {
           // Your Top Mixes
           const SectionTitle(title: "Your top mixes"),
           const SizedBox(height: 8),
-          SizedBox(
-            height: 150,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: const [
-                MixCard(
-                  title: "Quốc Thiên Mix",
-                  subtitle: "Bằng Kiều, Đình Tiến Đạt",
-                  imageUrl: "assets/images/artist1.jpg",
-                ),
-                MixCard(
-                  title: "Karik Mix",
-                  subtitle: "Da LAB, SOOBIN",
-                  imageUrl: "assets/images/artist2.jpg",
-                ),
-                MixCard(
-                  title: "Hip-hop Mix",
-                  subtitle: "Andrew Gold",
-                  imageUrl: "assets/images/artist3.jpg",
-                ),
-              ],
-            ),
-          ),
+          Obx(() {
+            return SizedBox(
+              height: 150,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: musicController.playlist.length,
+                itemBuilder: (context, index) {
+                  final album = musicController.playlist[index];
+                  return GestureDetector(
+                    onTap: () {
+                      albumController.setAlbum(album);
+
+                      // Điều hướng đến màn hình chi tiết album
+                      Get.to(() =>
+                          AlbumScreen()); // Sử dụng Get.to() để điều hướngchi tiết
+                    },
+                    child: MixCard(
+                      title: album['name'] ?? "Unknown Title",
+                      subtitle: album['artist'] ?? "Unknown Artist",
+                      imageUrl: album['cover_image'] ??
+                          "assets/images/placeholder.jpg",
+                    ),
+                  );
+                },
+              ),
+            );
+          }),
           const SizedBox(height: 16),
 
           // Recents
@@ -293,6 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           onPressed: () {
                             musicController.updateFavoriteStatus(song['id']);
+                            // api.updateFavoriteStatus(song['id']);
                           },
                         ),
                       ),

@@ -1,4 +1,4 @@
-import 'package:client/widgets/playmusic.dart';
+import 'package:client/controller/playmusic.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:client/widgets/lycrics.widget.dart';
 import 'package:get/get.dart';
@@ -13,12 +13,13 @@ class SongDetailScreen extends StatefulWidget {
 
 class _SongDetailScreenState extends State<SongDetailScreen> {
   final MusicController musicController = Get.put(MusicController());
+  // final Api api = Get.put(Api());
 
   @override
   void initState() {
     super.initState();
     final Map<String, dynamic> song = Get.arguments;
-                    musicController.playSong(song['id'], song['url']);
+    musicController.playSong(song['id'], song['url']);
     musicController.getFavoriteStatus(song['id'].toString());
   }
 

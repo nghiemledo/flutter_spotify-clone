@@ -1,4 +1,4 @@
-import 'package:client/widgets/playmusic.dart';
+import 'package:client/controller/playmusic.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -49,7 +49,7 @@ class SongWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Obx(() => Text(
-                              "Đang phát: ${controller.title.value}",
+                              controller.title.value,
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 14),
                             )),

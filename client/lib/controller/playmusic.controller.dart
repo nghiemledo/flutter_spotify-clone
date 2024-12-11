@@ -39,6 +39,7 @@ class MusicController extends GetxController {
     super.onInit();
     // Tải danh sách bài hát khi controller được khởi tạo
     fetchSongs();
+    fetchAlbums();
 
     // Lắng nghe trạng thái phát nhạc
     _audioPlayer.playerStateStream.listen((state) {
@@ -142,7 +143,8 @@ class MusicController extends GetxController {
         }
 
         // Tải lại danh sách bài hát sau khi cập nhật
-        fetchSongs();
+        playlist[currentSongIndex.value]['isFavorite'] = isFavorite.value;
+        // fetchSongs();
       } else {
         // Hoàn nguyên trạng thái nếu thất bại
         isFavorite.value = currentStatus;
@@ -160,7 +162,48 @@ class MusicController extends GetxController {
     }
   }
 
-  // Phát bài hát
+  Future<void> fetchAlbums() async {
+    final url = Uri.parse(
+        'https://66e2f263494df9a478e3be18.mockapi.io/api/v1/products'); // Replace with your actual API URL
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+
+        // Assuming each album has a list of songs, you can modify it like below
+        playlist.value = data.map((album) {
+          return {
+            'cover_image': album['cover_image'], // Album cover image
+            'name': album['name'], // Album name
+            'artist': album['artist'], // Artist name
+            'songs': album['songs'].map((song) {
+              return {
+                'id': song['id'],
+                'cover_image': song['cover_image'],
+                'title': song['title'],
+                'artist': song['artist'],
+                'url': song['url'],
+                'album': song['album'],
+                'genre': song['genre'],
+                'lyrics': song['lyrics'],
+              };
+            }).toList(),
+          };
+        }).toList();
+        // You can choose to load the first song of the first album
+        if (playlist.isNotEmpty) {
+          _updateSongInfo(0); // Updates the first song's details
+          await _audioPlayer.setUrl(playlist[0]['songs'][0]['url']);
+        }
+      } else {
+        print('Error fetching albums: ${response.statusCode}');
+      }
+    } catch (e) {
+      print("Error fetching albums: $e");
+    }
+  }
+
+// Phát bài hát
   Future<void> playSong(String songId, String url) async {
     if (url.isEmpty) return;
 
@@ -175,8 +218,12 @@ class MusicController extends GetxController {
       currentSongId.value = songId;
       currentSongUrl.value = url;
 
+      // Kiểm tra nếu tệp âm thanh chưa được tải, thực hiện việc tải
+      if (_audioPlayer.processingState != ProcessingState.ready) {
+        await _audioPlayer.setUrl(url);
+      }
+
       // Phát bài hát mới
-      await _audioPlayer.setUrl(url);
       await _audioPlayer.play();
 
       // Cập nhật trạng thái phát
@@ -186,28 +233,48 @@ class MusicController extends GetxController {
     }
   }
 
-  // Chuyển đổi giữa phát và tạm dừng
+// Phương thức tạm dừng nhạc
+  Future<void> pauseSong() async {
+    try {
+      if (_audioPlayer.processingState == ProcessingState.ready) {
+        await _audioPlayer.pause(); // Dừng nhạc nếu đang phát
+        isPlaying.value = !isPlaying.value; // Đánh dấu là đã tạm dừng
+        print('Đã tạm dừng');
+      }
+    } catch (e) {
+      print("Lỗi khi tạm dừng nhạc: $e");
+    }
+  }
+
+// Chuyển đổi giữa phát và tạm dừng
   Future<void> togglePlayPause() async {
     if (playlist.isEmpty) {
       print("Danh sách phát trống");
       return;
     }
+
     try {
       if (isPlaying.value) {
-        await _audioPlayer.pause();
+        // Nếu đang phát, tạm dừng
+        await pauseSong();
       } else {
-        // Kiểm tra trạng thái AudioPlayer trước khi phát
+        // Nếu không đang phát, kiểm tra và phát bài hát
         if (_audioPlayer.processingState != ProcessingState.ready) {
           await _audioPlayer.setUrl(playlist[currentSongIndex.value]['url']!);
         }
-        await _audioPlayer.play();
+        if (_audioPlayer.processingState == ProcessingState.ready) {
+          await _audioPlayer.play();
+        } else {
+          print("Audio player chưa sẵn sàng để phát");
+        }
+        isPlaying.value = true; // Đánh dấu là đang phát
       }
     } catch (e) {
       print("Lỗi khi chuyển đổi phát/tạm dừng: $e");
     }
   }
 
-  // Chuyển đến bài tiếp theo
+// Chuyển đến bài tiếp theo
   void skipNext() async {
     if (playlist.isEmpty) {
       print("Danh sách phát trống");
@@ -218,9 +285,20 @@ class MusicController extends GetxController {
       // Cập nhật chỉ mục bài hát
       currentSongIndex.value = (currentSongIndex.value + 1) % playlist.length;
 
+      // Kiểm tra URL bài hát tiếp theo
+      String? nextSongUrl = playlist[currentSongIndex.value]['url'];
+      if (nextSongUrl == null || nextSongUrl.isEmpty) {
+        print("URL bài hát không hợp lệ.");
+        return;
+      }
+
       // Phát bài hát tiếp theo
-      await _audioPlayer.setUrl(playlist[currentSongIndex.value]['url']!);
-      await _audioPlayer.play();
+      await _audioPlayer.setUrl(nextSongUrl);
+      if (_audioPlayer.processingState == ProcessingState.ready) {
+        await _audioPlayer.play();
+      } else {
+        print("Audio player chưa sẵn sàng để phát");
+      }
 
       // Cập nhật thông tin bài hát
       _updateSongInfo(currentSongIndex.value);
@@ -229,7 +307,7 @@ class MusicController extends GetxController {
     }
   }
 
-  // Quay lại bài hát trước
+// Quay lại bài hát trước
   void skipPrevious() async {
     if (playlist.isEmpty) {
       print("Danh sách phát trống");
@@ -241,9 +319,20 @@ class MusicController extends GetxController {
       currentSongIndex.value =
           (currentSongIndex.value - 1 + playlist.length) % playlist.length;
 
+      // Kiểm tra URL bài hát trước
+      String? prevSongUrl = playlist[currentSongIndex.value]['url'];
+      if (prevSongUrl == null || prevSongUrl.isEmpty) {
+        print("URL bài hát không hợp lệ.");
+        return;
+      }
+
       // Phát bài hát trước
-      await _audioPlayer.setUrl(playlist[currentSongIndex.value]['url']!);
-      await _audioPlayer.play();
+      await _audioPlayer.setUrl(prevSongUrl);
+      if (_audioPlayer.processingState == ProcessingState.ready) {
+        await _audioPlayer.play();
+      } else {
+        print("Audio player chưa sẵn sàng để phát");
+      }
 
       // Cập nhật thông tin bài hát
       _updateSongInfo(currentSongIndex.value);
@@ -255,8 +344,8 @@ class MusicController extends GetxController {
   // Cập nhật thông tin bài hát
   void _updateSongInfo(int index) {
     coverImage.value = playlist[index]['cover_image'] ?? '';
-    title.value = playlist[index]['title'] ?? 'Tên bài hát';
-    artist.value = playlist[index]['artist'] ?? 'Nghệ sĩ';
+    title.value = playlist[index]['title'] ?? '';
+    artist.value = playlist[index]['artist'] ?? '';
     url.value = playlist[index]['url'] ?? '';
     album.value = playlist[index]['album'] ?? '';
     genre.value = playlist[index]['genre'] ?? '';
@@ -279,8 +368,8 @@ class MusicController extends GetxController {
 
   @override
   void onClose() {
-    // Giải phóng tài nguyên AudioPlayer khi controller bị hủy
     super.onClose();
+    _audioPlayer.stop(); // Dừng nhạc trước khi giải phóng tài nguyên
     _audioPlayer.dispose();
   }
 }
