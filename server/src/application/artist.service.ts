@@ -13,8 +13,6 @@ class ArtistService {
     }
 
     async createArtist(artist: ArtistVM): Promise<ArtistVM> {
-        console.log("Service: " + artist);
-        
         return this.artistRepository.create(artist);
     }
 
