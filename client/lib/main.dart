@@ -27,9 +27,9 @@ class SpotifyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/sign-up',
       getPages: [
-        GetPage(name: '/', page: () => const LoginScreen()),
+        GetPage(name: '/', page: () => const MainScreen()),
         GetPage(name: '/home', page: () => const HomeScreen()),
         GetPage(name: '/search', page: () => const SearchScreen()),
         GetPage(name: '/library', page: () => const LibraryScreen()),
