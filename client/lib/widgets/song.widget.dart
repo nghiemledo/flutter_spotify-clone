@@ -1,43 +1,83 @@
+import 'package:client/widgets/playmusic.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SongWidget extends StatelessWidget {
   const SongWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey[900],
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
+    final MusicController controller =
+        Get.put(MusicController  ()); // Lấy controller đã có
+
+    return GestureDetector(
+      onTap: () {
+        // Truyền thông tin bài hát vào song-detail
+        Get.toNamed(
+          '/song-detail',
+          arguments: {
+            'title': controller.songName.value,
+            'artist': controller.artistName.value,
+            'fileUrl': controller.fileUrl.value,
+          },
+        );
+      },
+      child: Container(
+        color: Colors.black,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            color: Colors.grey[900],
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.music_note, color: Colors.white),
-              SizedBox(width: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    const Icon(Icons.music_note, color: Colors.white),
+                    const SizedBox(width: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(() => Text(
+                              "Đang phát: ${controller.songName.value}",
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 14),
+                            )),
+                        Obx(() => Text(
+                              controller.artistName.value,
+                              style: const TextStyle(
+                                  color: Colors.grey, fontSize: 12),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Row(
                 children: [
-                  Text(
-                    "Đang phát: Song Name",
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-                  Text(
-                    "Artist Name",
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  Obx(() => IconButton(
+                        onPressed: controller.togglePlayPause,
+                        icon: Icon(
+                          controller.isPlaying.value
+                              ? Icons.pause
+                              : Icons.play_arrow,
+                          color: Colors.white,
+                        ),
+                      )),
+                  const SizedBox(width: 18),
+                  IconButton(
+                    onPressed: controller.skipNext,
+                    icon: const Icon(Icons.skip_next, color: Colors.white),
                   ),
                 ],
               ),
             ],
           ),
-          Row(
-            children: [
-              Icon(Icons.pause, color: Colors.white),
-              SizedBox(width: 16),
-              Icon(Icons.skip_next, color: Colors.white),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
