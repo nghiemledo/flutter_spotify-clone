@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from 'dotenv';
 import 'express-async-errors';
 import bodyParser from "body-parser";
+import cors from 'cors';
 import morgan from "morgan";
 import mongoose from "mongoose";
 import authRouter from "./src/routes/auth.routes";
@@ -16,6 +17,7 @@ dotenv.config();
 app.use(express.urlencoded());
 app.use(express.json());
 app.use(morgan("combined"));
+app.use(cors());
 
 const PORT = process.env.PORT;
 

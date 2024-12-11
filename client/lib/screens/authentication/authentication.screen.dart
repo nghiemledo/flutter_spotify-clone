@@ -9,15 +9,12 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
-        // Thêm SingleChildScrollView để nội dung có thể cuộn
         padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Image(
-                image: NetworkImage(
-                    '')), // Hình ảnh có thể được thay thế bằng URL hợp lệ
+            const Image(image: NetworkImage('')),
             const Text(
               'Millions of songs.\nFree on Spotify.',
               textAlign: TextAlign.center,
