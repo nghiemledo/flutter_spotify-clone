@@ -1,5 +1,7 @@
 import 'package:client/screens/album/album.screen.dart';
 import 'package:client/screens/authentication/authentication.screen.dart';
+import 'package:client/screens/authentication/login.screen.dart';
+import 'package:client/screens/authentication/register.screen.dart';
 import 'package:client/screens/home/home.screen.dart';
 import 'package:client/screens/library/library.sceen.dart';
 import 'package:client/screens/search/search.screen.dart';
@@ -27,17 +29,19 @@ class SpotifyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => const MainScreen()),
+        GetPage(name: '/', page: () => const LoginScreen()),
         GetPage(name: '/home', page: () => const HomeScreen()),
         GetPage(name: '/search', page: () => const SearchScreen()),
         GetPage(name: '/library', page: () => const LibraryScreen()),
-        GetPage(name: '/song-detail', page: () => const SongDetailScreen()),
+        GetPage(name: '/song-detail', page: () => SongDetailScreen()),
         GetPage(name: '/user-profile', page: () => const ProfileScreen()),
         GetPage(name: '/favorite-list', page: () => const FavoriteListScreen()),
         GetPage(name: '/lyrics', page: () => const Lyrics()),
-        GetPage(name: '/song-detail', page: () => const SongDetailScreen()),
+        GetPage(name: '/song-detail', page: () => SongDetailScreen()),
         GetPage(name: '/album', page: () => const AlbumScreen()),
         GetPage(name: '/sign-up', page: () => const SignUpScreen()),
+        GetPage(name: '/login', page: () => const LoginScreen()),
+        GetPage(name: '/register', page: () => const RegisterScreen()),
       ],
     );
   }

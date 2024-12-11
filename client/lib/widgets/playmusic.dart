@@ -6,24 +6,57 @@ import 'package:http/http.dart' as http;
 class MusicController extends GetxController {
   final AudioPlayer _audioPlayer =
       AudioPlayer(); // Khởi tạo đối tượng AudioPlayer
-  var isPlaying = false.obs; 
-  var coverImage = "cover_image".obs; 
-  var title = "title".obs; 
+  var isPlaying = false.obs;
+  var currentPosition = Duration.zero.obs; // Thời gian hiện tại của bài hát
+  var duration = Duration.zero.obs; // Tổng thời gian của bài hát
+  var coverImage = "cover_image".obs;
+  var title = "title".obs;
   var artist = "artist".obs;
-  var url = "url".obs; 
-  var album = "album".obs; 
-  var genre = "genre".obs; 
+  var url = "url".obs;
+  var album = "album".obs;
+  var genre = "genre".obs;
   var lyrics = "lyrics".obs;
+  var isFavorite = false.obs;
+
+  // Giả lập API service
+  Future<void> fetchFavoriteStatus() async {
+    try {
+      // Gọi API để lấy trạng thái yêu thích
+      await Future.delayed(const Duration(seconds: 1)); // Giả lập độ trễ API
+      isFavorite.value = true; // Trạng thái giả sử trả về từ API
+    } catch (e) {
+      print("Lỗi khi lấy trạng thái: $e");
+    }
+  }
+
+  Future<void> updateFavoriteStatus() async {
+    try {
+      // Cập nhật trạng thái yêu thích lên API
+      await Future.delayed(
+          const Duration(milliseconds: 500)); // Giả lập độ trễ API
+      print("Cập nhật trạng thái: ${isFavorite.value}");
+    } catch (e) {
+      print("Lỗi khi cập nhật trạng thái: $e");
+    }
+  }
 
   var playlist = <Map<String, dynamic>>[].obs;
-  var currentSongIndex = 0.obs; 
+  var currentSongIndex = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
-    _fetchSongs(); 
+    _fetchSongs();
     _audioPlayer.playerStateStream.listen((state) {
       isPlaying.value = state.playing;
+    });
+
+    // Lắng nghe sự thay đổi vị trí và tổng thời gian bài hát
+    _audioPlayer.positionStream.listen((position) {
+      currentPosition.value = position;
+    });
+    _audioPlayer.durationStream.listen((duration) {
+      this.duration.value = duration ?? Duration.zero;
     });
   }
 
@@ -68,6 +101,8 @@ class MusicController extends GetxController {
     album.value = playlist[index]['album'] ?? ''; // Album
     genre.value = playlist[index]['genre'] ?? ''; // Thể loại
     lyrics.value = playlist[index]['lyrics'] ?? ''; // Lời bài hát
+    isFavorite.value =
+        playlist[index]['isFavorite'] ?? false; // Trạng thái yêu thích
   }
 
   // Hàm play bài hát
@@ -103,39 +138,47 @@ class MusicController extends GetxController {
   }
 
   // chuyển đến bài tiếp theo
-  Future<void> skipNext() async {
+  void skipNext() async {
     if (playlist.isEmpty) {
       print("Playlist is empty");
       return;
     }
+
     try {
       currentSongIndex.value = (currentSongIndex.value + 1) % playlist.length;
-      await _setCurrentSong();
+      await _audioPlayer.setUrl(playlist[currentSongIndex.value]['url']!);
+      await _audioPlayer.play();
+
+      // Cập nhật thông tin bài hát hiện tại
+      _updateSongInfo(currentSongIndex.value);
     } catch (e) {
       print("Error during skipNext: $e");
     }
   }
 
   // Quay lại bài hát trước đó
-  Future<void> skipPrevious() async {
+  void skipPrevious() async {
     if (playlist.isEmpty) {
       print("Playlist is empty");
       return;
     }
+
     try {
       currentSongIndex.value =
           (currentSongIndex.value - 1 + playlist.length) % playlist.length;
-      await _setCurrentSong();
+      await _audioPlayer.setUrl(playlist[currentSongIndex.value]['url']!);
+      await _audioPlayer.play();
+
+      // Cập nhật thông tin bài hát hiện tại
+      _updateSongInfo(currentSongIndex.value);
     } catch (e) {
       print("Error during skipPrevious: $e");
     }
   }
 
-  // Thiết lập bài hát hiện tại
-  Future<void> _setCurrentSong() async {
-    _updateSongInfo(currentSongIndex.value);
-    await _audioPlayer.setUrl(playlist[currentSongIndex.value]['url']!);
-    await _audioPlayer.play(); // Phát bài hát
+// Hàm tua bài hát
+  void seekTo(Duration position) {
+    _audioPlayer.seek(position);
   }
 
   @override

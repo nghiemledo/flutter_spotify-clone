@@ -23,9 +23,11 @@ class SongWidget extends StatelessWidget {
             'album': controller.album.value,
             'genre': controller.genre.value,
             'lyrics': controller.lyrics.value,
+            'isFavorite': controller.isFavorite.value,
           },
         );
       },
+      
       child: Container(
         color: Colors.black,
         child: Container(

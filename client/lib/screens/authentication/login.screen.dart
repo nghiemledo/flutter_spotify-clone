@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -24,19 +25,22 @@ class LoginScreen extends StatelessWidget {
                     icon: const Icon(Icons.arrow_back_ios_outlined,
                         color: Colors.white, size: 30),
                     onPressed: () {
-                      Navigator.pop(context);
+                      Get.back();
                     },
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   flex: 20,
-                  child: Text(
-                    "Login",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  child: GestureDetector(
+                    onTap: () => {Get.toNamed('home')},
+                    child: const Text(
+                      "Login",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -47,12 +51,12 @@ class LoginScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("Email or username",
+                const Text(
+                  "Email or username",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20
-                  ),
+                      fontSize: 20),
                 ),
                 TextField(
                   style: const TextStyle(color: Colors.white),
@@ -71,12 +75,12 @@ class LoginScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("Passwords",
+                const Text(
+                  "Passwords",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20
-                  ),
+                      fontSize: 20),
                 ),
                 TextField(
                   obscureText: true,
@@ -88,7 +92,8 @@ class LoginScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide.none,
                     ),
-                    suffixIcon: const Icon(Icons.visibility_off, color: Colors.grey),
+                    suffixIcon:
+                        const Icon(Icons.visibility_off, color: Colors.grey),
                   ),
                 ),
               ],
@@ -98,17 +103,18 @@ class LoginScreen extends StatelessWidget {
               onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.grey[800],
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 12.0),
               ),
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
                 // padding: EdgeInsets.all(8.0),
-                child: Text('Log in',
+                child: Text(
+                  'Log in',
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 17
-                  ),
+                      fontSize: 17),
                 ),
               ),
             ),
@@ -118,10 +124,13 @@ class LoginScreen extends StatelessWidget {
               style: TextButton.styleFrom(
                 side: const BorderSide(color: Colors.white, width: 1),
               ),
-              child: const Text(
-                'Log in without password',
-                style: TextStyle(
-                  color: Colors.white,
+              child: GestureDetector(
+                onTap: () => {Get.toNamed('/register')},
+                child: const Text(
+                  'Register',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             )
