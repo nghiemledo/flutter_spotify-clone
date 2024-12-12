@@ -10,12 +10,13 @@ import 'package:client/screens/user/favoritelist.screen.dart';
 import 'package:client/screens/user/profile.screen.dart';
 import 'package:client/widgets/lycrics.widget.dart';
 import 'package:client/widgets/navigation.widget.dart';
-import 'package:client/widgets/playmusic.dart';
+import 'package:client/controller/playmusic.controller.dart';
 import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   Get.put(MusicController());
   runApp(const SpotifyApp());
 }
@@ -30,15 +31,15 @@ class SpotifyApp extends StatelessWidget {
       initialRoute: '/sign-up',
       getPages: [
         GetPage(name: '/', page: () => const MainScreen()),
-        GetPage(name: '/home', page: () => const HomeScreen()),
+        // GetPage(name: '/home', page: () => const HomeScreen()),
         GetPage(name: '/search', page: () => const SearchScreen()),
         GetPage(name: '/library', page: () => const LibraryScreen()),
-        GetPage(name: '/song-detail', page: () => SongDetailScreen()),
+        GetPage(name: '/song-detail', page: () => const SongDetailScreen()),
         GetPage(name: '/user-profile', page: () => const ProfileScreen()),
         GetPage(name: '/favorite-list', page: () => const FavoriteListScreen()),
         GetPage(name: '/lyrics', page: () => const Lyrics()),
-        GetPage(name: '/song-detail', page: () => SongDetailScreen()),
-        GetPage(name: '/album', page: () => const AlbumScreen()),
+        GetPage(name: '/song-detail', page: () => const SongDetailScreen()),
+        GetPage(name: '/album', page: () => AlbumScreen()),
         GetPage(name: '/sign-up', page: () => const SignUpScreen()),
         GetPage(name: '/login', page: () => const LoginScreen()),
         GetPage(name: '/register', page: () => const RegisterScreen()),
@@ -66,7 +67,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   final List<Widget> _pages = [
-    const HomeScreen(),
+    HomeScreen(),
     const SearchScreen(),
     const LibraryScreen(),
   ];

@@ -1,3 +1,4 @@
+import 'package:client/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,7 +28,7 @@ class SignUpScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Get.toNamed('/home');
+                Get.offAll(() => const MainScreen(initialPage: 0));
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
               child: const Text(

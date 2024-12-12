@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:client/main.dart';
 import 'package:client/widgets/navigation.widget.dart';
-import 'package:client/widgets/playmusic.dart';
+import 'package:client/controller/playmusic.controller.dart';
 import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -188,6 +188,7 @@ class FavoriteListScreen extends StatelessWidget {
     final MusicController musicController = Get.find();
 
     // Cập nhật dữ liệu vào MusicController
+    musicController.id.value = song['id'] ?? '';
     musicController.coverImage.value = song['cover_image'] ?? '';
     musicController.title.value = song['title'] ?? 'Chưa có tiêu đề';
     musicController.artist.value = song['artist'] ?? 'N/A';
