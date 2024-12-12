@@ -1,10 +1,63 @@
 import 'package:client/main.dart';
+import 'package:client/screens/song/songdetail.screen.dart';
 import 'package:client/widgets/navigation.widget.dart';
 import 'package:client/widgets/song.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Map<String, dynamic>> songs = [];
+  List<Map<String, dynamic>> artists = [];
+
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchSongs();
+    fetchArtists();
+  }
+
+  Future<void> fetchSongs() async {
+    try {
+      final response = await Dio().get('http://localhost:3000/api/v1/song');
+      if (response.statusCode == 200 && response.data['data'] != null) {
+        setState(() {
+          songs = List<Map<String, dynamic>>.from(response.data['data']);
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print("Error fetching songs: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> fetchArtists() async {
+    try {
+      final response = await Dio().get('http://localhost:3000/api/v1/artist');
+      if (response.statusCode == 200 && response.data['data'] != null) {
+        setState(() {
+          artists = List<Map<String, dynamic>>.from(response.data['data']);
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print("Error fetching songs: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,63 +111,34 @@ class HomeScreen extends StatelessWidget {
               height:
                   256, // Chiều cao phù hợp với 2 dòng (mỗi dòng 50px + khoảng cách)
               child: GridView.builder(
-                itemCount: 8, // Tổng số phần tử trong GridView
+                itemCount: songs.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // 2 cột
-                  crossAxisSpacing: 8, // Khoảng cách ngang giữa các cột
-                  mainAxisSpacing: 8, // Khoảng cách dọc giữa các hàng
-                  mainAxisExtent: 50, // Chiều cao mỗi ô là 50px
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  mainAxisExtent: 50,
                 ),
-                physics:
-                    const NeverScrollableScrollPhysics(), // Tắt cuộn độc lập
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  final items = [
-                    {
-                      "title": "G-DRAGON",
-                      "subtitle": "Artist",
-                      "image": "assets/images/artist4.jpg"
+                  final song = songs[index];
+                  return GestureDetector(
+                    onTap: () {
+                      // Chuyển sang trang chi tiết bài hát khi click
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SongDetailScreen(),
+                          settings: RouteSettings(
+                            arguments: song,
+                          ),
+                        ),
+                      );
                     },
-                    {
-                      "title": "Bạn Đời",
-                      "subtitle": "Album - Karik",
-                      "image": "assets/images/album.jpg"
-                    },
-                    {
-                      "title": "Live Concert",
-                      "subtitle": "Concert",
-                      "image": "assets/images/concert.jpg"
-                    },
-                    {
-                      "title": "Soul Of The Forest",
-                      "subtitle": "Album",
-                      "image": "assets/images/forest.jpg"
-                    },
-                    {
-                      "title": "Rất Lâu Rồi Mới Khóc",
-                      "subtitle": "Live Version",
-                      "image": "assets/images/live_song.jpg"
-                    },
-                    {
-                      "title": "Liked Songs",
-                      "subtitle": "3 songs added",
-                      "image": "assets/images/liked_songs.jpg"
-                    },
-                    {
-                      "title": "Có Một Nơi Như Thế",
-                      "subtitle": "Single",
-                      "image": "assets/images/single.jpg"
-                    },
-                    {
-                      "title": "The Masked Singer",
-                      "subtitle": "Live Show",
-                      "image": "assets/images/masked_singer.jpg"
-                    },
-                  ];
-
-                  return GridItem(
-                    title: items[index]["title"]!,
-                    subtitle: items[index]["subtitle"]!,
-                    imageUrl: items[index]["image"]!,
+                    child: GridItem(
+                      title: song['title'] ?? 'Unknown',
+                      subtitle: song['artist']['name'] ?? 'Unknown Artist',
+                      imageUrl: Uri.decodeFull(song['coverImageUrl']),
+                    ),
                   );
                 },
               ),
@@ -122,9 +146,7 @@ class HomeScreen extends StatelessWidget {
 
             // Banner
             GestureDetector(
-              onTap: () {
-                // Hành động khi nhấn vào
-              },
+              onTap: () {},
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
@@ -192,37 +214,23 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 SizedBox(
                   height: 120,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: const [
-                      RecentItem(
-                        title: "G-DRAGON",
-                        subtitle: "Artist",
-                        imageUrl: "assets/images/artist4.jpg",
-                      ),
-                      RecentItem(
-                        title: "Liked Songs",
-                        subtitle: "3 songs added",
-                        imageUrl: "assets/images/liked_songs.jpg",
-                        hasBadge: true,
-                      ),
-                      RecentItem(
-                        title: "Bạn Đời",
-                        subtitle: "Album - Karik",
-                        imageUrl: "assets/images/album.jpg",
-                      ),
-                      RecentItem(
-                        title: "New Song",
-                        subtitle: "Album - Sơn Tùng",
-                        imageUrl: "assets/images/new_song.jpg",
-                      ),
-                      RecentItem(
-                        title: "Hits",
-                        subtitle: "Playlist",
-                        imageUrl: "assets/images/playlist.jpg",
-                      ),
-                    ],
-                  ),
+                  child: isLoading
+                      ? const Center(
+                          child:
+                              CircularProgressIndicator()) // Hiển thị loading khi đang tải
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: artists.length, // Số lượng nghệ sĩ
+                          itemBuilder: (context, index) {
+                            final artist = artists[index]; // Dữ liệu nghệ sĩ
+                            return RecentItem(
+                              title: artist['name'] ?? 'Unknown Artist',
+                              subtitle: artist['bio'] ?? 'Artist',
+                              imageUrl: artist['avatarUrl'] ??
+                                  'assets/images/default.jpg',
+                            );
+                          },
+                        ),
                 ),
               ],
             ),
@@ -343,7 +351,7 @@ class GridItem extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
+            child: Image.network(
               imageUrl,
               height: 40, // Chiều cao ảnh
               width: 40, // Chiều rộng ảnh
@@ -482,7 +490,7 @@ class RecentItem extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage(imageUrl),
+                backgroundImage: NetworkImage(imageUrl),
               ),
               if (hasBadge)
                 Positioned(

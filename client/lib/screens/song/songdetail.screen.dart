@@ -3,14 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:client/widgets/lycrics.widget.dart';
 import 'package:get/get.dart';
 
-class SongDetailScreen extends StatelessWidget {
+class SongDetailScreen extends StatefulWidget {
   SongDetailScreen({super.key});
+
+  @override
+  State<SongDetailScreen> createState() => _SongDetailScreenState();
+}
+
+class _SongDetailScreenState extends State<SongDetailScreen> {
   final MusicController musicController = Get.put(MusicController());
 
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> song = Get.arguments;
-    musicController.playSong(song['url']);
+    musicController.playSong(song['fileUrl']);
 
     musicController.fetchFavoriteStatus();
     return Scaffold(
@@ -123,9 +129,8 @@ class SongDetailScreen extends StatelessWidget {
                         .toDouble(),
                     min: 0,
                     max: musicController.duration.value.inSeconds.toDouble(),
-                    activeColor: Colors.blueAccent, 
-                    inactiveColor: const Color.fromARGB(
-                        255, 255, 255, 255), 
+                    activeColor: Colors.blueAccent,
+                    inactiveColor: const Color.fromARGB(255, 255, 255, 255),
                     onChanged: (value) {
                       musicController.seekTo(Duration(seconds: value.toInt()));
                     },

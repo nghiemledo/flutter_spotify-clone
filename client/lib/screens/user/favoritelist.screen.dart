@@ -188,10 +188,10 @@ class FavoriteListScreen extends StatelessWidget {
     final MusicController musicController = Get.find();
 
     // Cập nhật dữ liệu vào MusicController
-    musicController.coverImage.value = song['cover_image'] ?? '';
+    musicController.coverImage.value = song['coverImageUrl'] ?? '';
     musicController.title.value = song['title'] ?? 'Chưa có tiêu đề';
     musicController.artist.value = song['artist'] ?? 'N/A';
-    musicController.url.value = song['url'] ?? '';
+    musicController.fileUrl.value = song['fileUrl'] ?? '';
     musicController.album.value = song['album'] ?? '';
     musicController.genre.value = song['genre'] ?? '';
     musicController.lyrics.value = song['lyrics'] ?? '';
@@ -213,12 +213,12 @@ class FavoriteListScreen extends StatelessWidget {
             image: DecorationImage(
               // Sử dụng ảnh từ URL hoặc ảnh placeholder
               image: NetworkImage(
-                  song['cover_image'] ?? 'https://picsum.photos/80/80'),
+                  song['coverImageUrl'] ?? 'https://picsum.photos/80/80'),
               fit: BoxFit.cover,
             ),
           ),
           child: Image.network(
-            song['cover_image'] ?? 'https://picsum.photos/80/80',
+            song['coverImageUrl'] ?? 'https://picsum.photos/80/80',
             fit: BoxFit.cover,
             // Xử lý lỗi khi không tải được ảnh
             errorBuilder: (context, error, stackTrace) {

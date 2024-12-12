@@ -9,10 +9,10 @@ class MusicController extends GetxController {
   var isPlaying = false.obs;
   var currentPosition = Duration.zero.obs; // Thời gian hiện tại của bài hát
   var duration = Duration.zero.obs; // Tổng thời gian của bài hát
-  var coverImage = "cover_image".obs;
+  var coverImage = "coverImageUrl".obs;
   var title = "title".obs;
   var artist = "artist".obs;
-  var url = "url".obs;
+  var fileUrl = "fileUrl".obs;
   var album = "album".obs;
   var genre = "genre".obs;
   var lyrics = "lyrics".obs;
@@ -70,10 +70,10 @@ class MusicController extends GetxController {
         final List<dynamic> data = json.decode(response.body);
         playlist.value = data.map((song) {
           return {
-            'cover_image': song['cover_image'],
+            'coverImageUrl': song['coverImageUrl'],
             'title': song['title'],
             'artist': song['artist'],
-            'url': song['url'],
+            'fileUrl': song['fileUrl'],
             'album': song['album'],
             'genre': song['genre'],
             'lyrics': song['lyrics'],
@@ -94,10 +94,10 @@ class MusicController extends GetxController {
 
   // Cập nhật thông tin
   void _updateSongInfo(int index) {
-    coverImage.value = playlist[index]['cover_image'] ?? ''; // Ảnh bìa
+    coverImage.value = playlist[index]['coverImageUrl'] ?? ''; // Ảnh bìa
     title.value = playlist[index]['title'] ?? 'Name'; // Tiêu đề
     artist.value = playlist[index]['artist'] ?? 'Artist'; // Nghệ sĩ
-    url.value = playlist[index]['url'] ?? ''; // Đường dẫn
+    fileUrl.value = playlist[index]['fileUrl'] ?? ''; // Đường dẫn
     album.value = playlist[index]['album'] ?? ''; // Album
     genre.value = playlist[index]['genre'] ?? ''; // Thể loại
     lyrics.value = playlist[index]['lyrics'] ?? ''; // Lời bài hát
@@ -128,7 +128,8 @@ class MusicController extends GetxController {
         await _audioPlayer.pause();
       } else {
         if (_audioPlayer.processingState != ProcessingState.ready) {
-          await _audioPlayer.setUrl(playlist[currentSongIndex.value]['url']!);
+          await _audioPlayer
+              .setUrl(playlist[currentSongIndex.value]['fileUrl']!);
         }
         await _audioPlayer.play();
       }
@@ -146,7 +147,7 @@ class MusicController extends GetxController {
 
     try {
       currentSongIndex.value = (currentSongIndex.value + 1) % playlist.length;
-      await _audioPlayer.setUrl(playlist[currentSongIndex.value]['url']!);
+      await _audioPlayer.setUrl(playlist[currentSongIndex.value]['fileUrl']!);
       await _audioPlayer.play();
 
       // Cập nhật thông tin bài hát hiện tại
@@ -166,7 +167,7 @@ class MusicController extends GetxController {
     try {
       currentSongIndex.value =
           (currentSongIndex.value - 1 + playlist.length) % playlist.length;
-      await _audioPlayer.setUrl(playlist[currentSongIndex.value]['url']!);
+      await _audioPlayer.setUrl(playlist[currentSongIndex.value]['fileUrl']!);
       await _audioPlayer.play();
 
       // Cập nhật thông tin bài hát hiện tại
