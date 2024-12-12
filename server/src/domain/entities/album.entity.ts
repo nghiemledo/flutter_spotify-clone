@@ -12,8 +12,8 @@ const AlbumSchema: Schema = new Schema (
     {
         title: {type: String, required: true},
         artist: { type: mongoose.Types.ObjectId, ref: "Artist" }, 
-        coverImageUrl: String,
-        releaseDate: Date,
+        coverImageUrl: {type: String, required: true},
+        releaseDate: {type: String, required: true},
         songs: [{ type: mongoose.Types.ObjectId, ref: "Song" }],         
     }, 
     { timestamps: true }

@@ -8,7 +8,9 @@ class SongVM {
         public readonly artist: mongoose.Types.ObjectId,
         public readonly album: mongoose.Types.ObjectId,
         public readonly fileUrl: string,
-        public readonly coverImageUrl: string
+        public readonly lyrics: string,
+        public readonly coverImageUrl: string,
+        public readonly isFavorite: string
     ) {}
 }
 

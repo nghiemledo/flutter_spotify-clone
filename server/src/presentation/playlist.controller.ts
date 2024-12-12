@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import PlaylistService from "../application/playlist.service";
 import playlistEntity from "../domain/entities/playlist.entity";
-import ValidationError from "../errors/validation.error";
 import PlaylistVM from "../infrastructure/viewmodel/playlist.vm";
 
 class PlaylistController {
@@ -34,8 +33,10 @@ class PlaylistController {
                 message: "Playlist found successfully",
                 data: playlistFound
             })
-        } catch (error: any) {
-            throw new ValidationError(error.message, "")
+        } catch (err: any) {
+            response.status(500).json({
+                message: "Internal server error"
+            })
         }
     }
 

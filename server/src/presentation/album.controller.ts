@@ -35,7 +35,7 @@ class AlbumController {
 
     async createAlbum(request: Request, response: Response): Promise<void>{
         try {
-            const {title, artist, coverImageUrl, songs} = request.body;
+            const {title, artist, coverImageUrl, releaseDate, songs} = request.body;
             const existingAlbum = await albumEntity.findOne({title});
             if(existingAlbum) {
                 response.status(400).json({
@@ -44,7 +44,7 @@ class AlbumController {
                 return;
             }
 
-            const newAlbum = new AlbumVM(title, artist, coverImageUrl, songs);
+            const newAlbum = new AlbumVM(title, artist, coverImageUrl, releaseDate, songs);
             const result = await this.albumService.createAlbum(newAlbum);
             if(!result) {
                 response.status(400).json({
@@ -64,13 +64,14 @@ class AlbumController {
     async updateAlbum(request: Request, response: Response): Promise<void> {
         try {
             const {id} = request.params;
-            const {title, artist, coverImageUrl, songs} = request.body;
+            const {title, artist, coverImageUrl, releaseDate, songs} = request.body;
 
             const albumFound = await albumEntity.findById(id);
 
             const isAlbumChanged = albumFound?.title == title &&
             albumFound?.artist == artist &&
-            albumFound?.coverImageUrl == coverImageUrl
+            albumFound?.coverImageUrl == coverImageUrl &&
+            albumFound?.releaseDate == releaseDate &&
             albumFound?.songs == songs
 
             if(!isAlbumChanged) {
@@ -79,7 +80,7 @@ class AlbumController {
                 })
                 return;
             } else {
-                const updateAlbum = new AlbumVM(title, artist, coverImageUrl, songs);
+                const updateAlbum = new AlbumVM(title, artist, coverImageUrl, releaseDate, songs);
                 const data = await this.albumService.updateAlbum(id, updateAlbum);
                 if(!data) {
                     response.status(400).json({
