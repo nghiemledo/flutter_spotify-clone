@@ -103,7 +103,9 @@ class ArtistController {
           message: "Delete artist successfully",
         });
       } else {
-        throw new ValidationError("Delete artist failed", "artist");
+        response.status(400).json({
+          message: "Delete artist failed",
+        });
       }
     } catch (error: any) {
       response.status(500).json({ message: error.message });

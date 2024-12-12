@@ -94,11 +94,13 @@ class GenreController {
             const { id } = request.params;
             const result = await this.genreService.deleteGenre(id);
             if(!result) {
-                throw new ValidationError("Failed to delete genre", "genre")
+                response.status(400).json({
+                    message: "Delete genre failed"
+                }) 
             } 
             response.status(200).json({
                 message: "Delete genre successfully"
-            })
+            }) 
         } catch (error: any) {
             response.status(500).json({message: error.message})
         }

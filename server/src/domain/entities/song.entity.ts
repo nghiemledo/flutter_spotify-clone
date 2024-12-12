@@ -7,7 +7,9 @@ export interface ISong extends Document {
     artist: mongoose.Types.ObjectId;
     album: mongoose.Types.ObjectId;
     fileUrl: string;
+    lyrics: string;
     coverImageUrl: string;
+    isFavorite: boolean
 };
 
 const SongSchema: Schema = new Schema(
@@ -18,7 +20,9 @@ const SongSchema: Schema = new Schema(
         artist: { type: Schema.Types.ObjectId, ref: "Artist", required: true },
         album: { type: Schema.Types.ObjectId, ref: "Album" },
         fileUrl: { type: String, required: true },
+        lyrics: {type: String, required: true},
         coverImageUrl: { type: String },
+        isFavorite: {type: Boolean, default: false}
     },
     { timestamps: true }
 );
