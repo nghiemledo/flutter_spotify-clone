@@ -142,7 +142,7 @@ class HomeScreen extends StatelessWidget {
                     child: MixCard(
                       title: album['name'] ?? "Unknown Title",
                       subtitle: album['artist'] ?? "Unknown Artist",
-                      imageUrl: album['cover_image'] ??
+                      imageUrl: album['coverImageUrl'] ??
                           "assets/images/placeholder.jpg",
                     ),
                   );
@@ -231,7 +231,7 @@ class HomeScreen extends StatelessWidget {
                         width: double.infinity,
                         height: 350, // Chiều cao của ảnh nền
                         child: Image.network(
-                          song['cover_image'],
+                          song['coverImageUrl'],
                           fit: BoxFit.cover, // Ảnh sẽ bao phủ toàn bộ diện tích
                         ),
                       ),
@@ -245,7 +245,7 @@ class HomeScreen extends StatelessWidget {
                               BorderRadius.circular(8), // Bo góc cho ảnh nhỏ
                           child: Image.network(
                             song[
-                                'cover_image'], // Dùng ảnh từ bài hát hoặc một ảnh khác
+                                'coverImageUrl'], // Dùng ảnh từ bài hát hoặc một ảnh khác
                             width: 50,
                             height: 50,
                             fit: BoxFit.cover,
@@ -292,8 +292,8 @@ class HomeScreen extends StatelessWidget {
                             size: 40, // Tăng kích thước nút yêu thích
                           ),
                           onPressed: () {
-                            musicController.updateFavoriteStatus(song['id']);
-                            // api.updateFavoriteStatus(song['id']);
+                            musicController.updateFavoriteStatus(song['_id']);
+                            // api.updateFavoriteStatus(song['_id']);
                           },
                         ),
                       ),
@@ -306,11 +306,11 @@ class HomeScreen extends StatelessWidget {
                               onPressed: () {
                                 // Gọi phương thức playSong để phát bài hát mới
                                 musicController.playSong(
-                                    song['id'], song['url']);
+                                    song['_id'], song['fileUrl']);
                               },
                               icon: Icon(
                                 musicController.currentSongId.value ==
-                                        song['id']
+                                        song['_id']
                                     ? (musicController.isPlaying.value
                                         ? Icons.pause
                                         : Icons.play_arrow)

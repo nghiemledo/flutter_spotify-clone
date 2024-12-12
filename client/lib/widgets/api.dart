@@ -47,10 +47,10 @@
 //         // Cập nhật danh sách bài hát và playlist
 //         playlist.value = data.map((song) {
 //           return {
-//             'cover_image': song['cover_image'],
+//             'coverImageUrl': song['coverImageUrl'],
 //             'title': song['title'],
 //             'artist': song['artist'],
-//             'url': song['url'],
+//             'fileUrl': song['fileUrl'],
 //             'album': song['album'],
 //             'genre': song['genre'],
 //             'lyrics': song['lyrics'],
@@ -62,7 +62,7 @@
 //         // Nếu playlist không rỗng, phát bài đầu tiên
 //         if (playlist.isNotEmpty) {
 //           _updateSongInfo(0);
-//           await _audioPlayer.setUrl(playlist[0]['url']);
+//           await _audioPlayer.setUrl(playlist[0]['fileUrl']);
 //         }
 //       } else {
 //         print('Lỗi tải bài hát: ${response.statusCode}');
@@ -160,16 +160,16 @@
 //         // Cập nhật playlist từ album
 //         playlist.value = data.map((album) {
 //           return {
-//             'cover_image': album['cover_image'],
+//             'coverImageUrl': album['coverImageUrl'],
 //             'name': album['name'],
 //             'artist': album['artist'],
 //             'songs': album['songs'].map((song) {
 //               return {
-//                 'id': song['id'],
-//                 'cover_image': song['cover_image'],
+//                 '_id': song['_id'],
+//                 'coverImageUrl': song['coverImageUrl'],
 //                 'title': song['title'],
 //                 'artist': song['artist'],
-//                 'url': song['url'],
+//                 'fileUrl': song['fileUrl'],
 //                 'album': song['album'],
 //                 'genre': song['genre'],
 //                 'lyrics': song['lyrics'],
@@ -181,7 +181,7 @@
 //         // Nếu có ít nhất một album, chọn bài hát đầu tiên
 //         if (playlist.isNotEmpty) {
 //           _updateSongInfo(0); // Cập nhật thông tin bài hát đầu tiên
-//           await _audioPlayer.setUrl(playlist[0]['songs'][0]['url']);
+//           await _audioPlayer.setUrl(playlist[0]['songs'][0]['fileUrl']);
 //         }
 //       } else {
 //         print('Lỗi tải album: ${response.statusCode}');

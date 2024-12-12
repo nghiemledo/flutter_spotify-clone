@@ -13,7 +13,7 @@ class AlbumController extends GetxController {
   var isPlaying = false.obs;
   var currentPosition = Duration.zero.obs; // Thời gian hiện tại của bài hát
   var duration = Duration.zero.obs; // Tổng thời gian của bài hát
-  var coverImage = "cover_image".obs;
+  var coverImage = "coverImageUrl".obs;
   var title = "title".obs;
   var artist = "artist".obs;
   var url = "url".obs;
@@ -45,15 +45,15 @@ class AlbumController extends GetxController {
         // Assuming each album has a list of songs, you can modify it like below
         playlist.value = data.map((album) {
           return {
-            'cover_image': album['cover_image'], // Album cover image
+            'coverImageUrl': album['coverImageUrl'], // Album cover image
             'name': album['name'], // Album name
             'artist': album['artist'], // Artist name
             'songs': album['songs'].map((song) {
               return {
-                'cover_image': song['cover_image'],
+                'coverImageUrl': song['coverImageUrl'],
                 'title': song['title'],
                 'artist': song['artist'],
-                'url': song['url'],
+                'fileUrl': song['fileUrl'],
                 'album': song['album'],
                 'genre': song['genre'],
                 'lyrics': song['lyrics'],
@@ -64,7 +64,7 @@ class AlbumController extends GetxController {
         // You can choose to load the first song of the first album
         if (playlist.isNotEmpty) {
           _updateSongInfo(0); // Updates the first song's details
-          await _audioPlayer.setUrl(playlist[0]['songs'][0]['url']);
+          await _audioPlayer.setUrl(playlist[0]['songs'][0]['fileUrl']);
         }
       } else {
         print('Error fetching albums: ${response.statusCode}');
@@ -75,10 +75,10 @@ class AlbumController extends GetxController {
   }
 
   void _updateSongInfo(int index) {
-    coverImage.value = playlist[index]['cover_image'] ?? ''; // Ảnh bìa
+    coverImage.value = playlist[index]['coverImageUrl'] ?? ''; // Ảnh bìa
     title.value = playlist[index]['title'] ?? 'Name'; // Tiêu đề
     artist.value = playlist[index]['artist'] ?? 'Artist'; // Nghệ sĩ
-    url.value = playlist[index]['url'] ?? ''; // Đường dẫn
+    url.value = playlist[index]['fileUrl'] ?? ''; // Đường dẫn
     album.value = playlist[index]['album'] ?? ''; // Album
     genre.value = playlist[index]['genre'] ?? ''; // Thể loại
     lyrics.value = playlist[index]['lyrics'] ?? ''; // Lời bài hát
