@@ -55,7 +55,7 @@ class AlbumScreen extends StatelessWidget {
       height: 300,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(albumController.album['cover_image'] ??
+          image: NetworkImage(albumController.album['coverImageUrl'] ??
               'https://via.placeholder.com/150'),
           fit: BoxFit.cover,
         ),
@@ -166,7 +166,7 @@ class AlbumScreen extends StatelessWidget {
         },
         child: Row(
           children: [
-            Image.network(song['cover_image'], width: 50, height: 50),
+            Image.network(song['coverImageUrl'], width: 50, height: 50),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -194,8 +194,8 @@ class AlbumScreen extends StatelessWidget {
               icon: const Icon(Icons.more_vert_sharp, color: Colors.white),
               onPressed: () {
                 // Phát nhạc từ URL của bài hát
-                print('Đang phát: ${song['id']}');
-                musicController.playSong(song['id'], song['url']);
+                print('Đang phát: ${song['_id']}');
+                musicController.playSong(song['_id'], song['fileUrl']);
               },
             ),
           ],
@@ -245,11 +245,11 @@ void navigateToSongDetail(Map<String, dynamic> song) {
   final MusicController musicController = Get.find();
 
   // Cập nhật dữ liệu vào MusicController
-  musicController.id.value = song['id'] ?? '';
-  musicController.coverImage.value = song['cover_image'] ?? '';
+  musicController.id.value = song['_id'] ?? '';
+  musicController.coverImage.value = song['coverImageUrl'] ?? '';
   musicController.title.value = song['title'] ?? 'Chưa có tiêu đề';
   musicController.artist.value = song['artist'] ?? 'N/A';
-  musicController.url.value = song['url'] ?? '';
+  musicController.fileUrl.value = song['fileUrl'] ?? '';
   musicController.album.value = song['album'] ?? '';
   musicController.genre.value = song['genre'] ?? '';
   musicController.lyrics.value = song['lyrics'] ?? '';

@@ -19,8 +19,8 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
   void initState() {
     super.initState();
     final Map<String, dynamic> song = Get.arguments;
-    musicController.playSong(song['id'], song['url']);
-    musicController.getFavoriteStatus(song['id'].toString());
+    musicController.playSong(song['_id'], song['fileUrl']);
+    musicController.getFavoriteStatus(song['_id'].toString());
   }
 
   @override
@@ -124,7 +124,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                       ),
                       onPressed: () async {
                         await musicController
-                            .updateFavoriteStatus(song['id'].toString());
+                            .updateFavoriteStatus(song['_id'].toString());
                       },
                     ),
                   ],
